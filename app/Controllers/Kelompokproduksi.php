@@ -2,16 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Models\ModelAntarmuka;
 use App\Models\ModelKelompokproduksi;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
 class Kelompokproduksi extends ResourceController
 {
+    protected $db;
+    protected $objKelompokproduksi;
+    protected $objAntarmuka;
     // INISIALISASI OBJECT DATA
     function __construct()
     {
         $this->objKelompokproduksi = new ModelKelompokproduksi();
+        $this->objAntarmuka = new ModelAntarmuka();
         $this->db = \Config\Database::connect();
     }
     /**
@@ -22,6 +27,8 @@ class Kelompokproduksi extends ResourceController
     public function index()
     {
         $data['dtkelompokproduksi'] = $this->objKelompokproduksi->findAll();
+        $data['dtkelompokproduksi'] = $this->objKelompokproduksi->getGroupWithInterface();
+        $data['dtinterface'] = $this->db->table('interface1')->get()->getResult();
         return view('kelompokproduksi/index', $data);
     }
 
@@ -44,9 +51,9 @@ class Kelompokproduksi extends ResourceController
      */
     public function new()
     {
-        $builder = $this->db->table('kelompokproduksi1');
-        $query = $builder->get();
-        $data['dtkelompokproduksi'] = $query->getResult();
+        $data['dtkelompokproduksi'] = $this->objKelompokproduksi->findAll();
+        $data['dtkelompokproduksi'] = $this->objKelompokproduksi->getGroupWithInterface();
+        $data['dtinterface'] = $this->db->table('interface1')->get()->getResult();
         return view('kelompokproduksi/new', $data);
     }
 
@@ -62,6 +69,7 @@ class Kelompokproduksi extends ResourceController
             'id_kelproduksi' => $this->request->getVar('id_kelproduksi'),
             'kode_kelproduksi' => $this->request->getVar('kode_kelproduksi'),
             'nama_kelproduksi' => $this->request->getVar('nama_kelproduksi'),
+            'id_interface' => $this->request->getVar('id_interface'),
         ];
         $this->db->table('kelompokproduksi1')->insert($data);
 
@@ -77,7 +85,23 @@ class Kelompokproduksi extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+         // Ambil data berdasarkan ID
+       $dtkelompokproduksi = $this->objKelompokproduksi->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtkelompokproduksi) {
+           return redirect()->to(site_url('kelompokproduksi'))->with('error', 'Data tidak ditemukan');
+       }
+
+       // Ambil data rekening dari tabel interface1
+        $ModelAntarmuka = new ModelAntarmuka();
+        $dtinterface = $ModelAntarmuka->findAll(); // Mengambil semua data rekening
+
+        // Kirim data ke view
+        $data['dtkelompokproduksi'] = $dtkelompokproduksi;
+        $data['dtinterface'] = $dtinterface; // Kirimkan data rekening ke view
+       
+       return view('kelompokproduksi/edit', $data);
     }
 
     /**
@@ -89,7 +113,17 @@ class Kelompokproduksi extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $data = [
+            'id_kelproduksi' => $this->request->getVar('id_kelproduksi'),
+            'kode_kelproduksi' => $this->request->getVar('kode_kelproduksi'),
+            'nama_kelproduksi' => $this->request->getVar('nama_kelproduksi'),
+            'id_interface' => $this->request->getVar('id_interface'),
+        ];
+        // Update data berdasarkan ID
+        $this->objKelompokproduksi->update($id, $data);
+
+        return redirect()->to(site_url('kelompokproduksi'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

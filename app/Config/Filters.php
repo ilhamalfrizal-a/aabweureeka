@@ -40,6 +40,7 @@ class Filters extends BaseFilters
     ];
 
     /**
+     * 
      * List of special required filters.
      *
      * The filters listed here are special. They are applied before and after

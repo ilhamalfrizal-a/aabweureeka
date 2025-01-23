@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use TCPDF;
@@ -6,46 +7,61 @@ use App\Models\ModelLokasi;
 use App\Models\ModelSatuan;
 use App\Models\ModelPindahLokasi;
 use App\Models\ClosedPeriodsModel;
+use App\Models\PeriodsModels;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
 class PindahLokasi extends ResourceController
 {
-   protected $objLokasi;
-   protected $objSatuan;
-   protected $objPindahLokasi;
-   protected $objClosedPeriods;
-   protected $db;
-   protected $closedPeriodsModel;
-   
+    protected $objLokasi;
+    protected $objSatuan;
+    protected $objPindahLokasi;
+    protected $objClosedPeriods;
+    protected $db;
+    protected $PeriodsModels;
+
     //  INISIALISASI OBJECT DATA
-   function __construct()
-   {
-       $this->objLokasi = new ModelLokasi();
-       $this->objSatuan = new ModelSatuan();
-       $this->objPindahLokasi = new ModelPindahLokasi();
-       $this->objClosedPeriods = new ClosedPeriodsModel();
-       $this->closedPeriodsModel = new ClosedPeriodsModel();
-       $this->db = \Config\Database::connect();
-       
-   }
-    
-   
-   /**
+    function __construct()
+    {
+        $this->objLokasi = new ModelLokasi();
+        $this->objSatuan = new ModelSatuan();
+        $this->objPindahLokasi = new ModelPindahLokasi();
+        $this->objClosedPeriods = new ClosedPeriodsModel();
+        $this->PeriodsModels = new PeriodsModels();
+        $this->db = \Config\Database::connect();
+    }
+
+
+    /**
      * Return an array of resource objects, themselves in array format.
      *
      * @return ResponseInterface
      */
     public function index()
     {
-          // Menggunakan Query Builder untuk join tabel lokasi1 dan satuan1
-          $data['dtpindahlokasi'] = $this->objPindahLokasi->getAll();
-          $data['dtlokasi'] = $this->objLokasi->getAll();
-          $data['dtsatuan'] = $this->objSatuan->getAll();
-          return view('pindahlokasi/index', $data);
 
-          
+        $month = date('m');
+        $year = date('Y');
 
+        if (!in_groups('admin')) {
+            // Periksa apakah tutup buku periode bulan ini ada
+            $cek = $this->db->table('closed_periods')->where('month', $month)->where('year', $year)->where('is_closed', 1)->get();
+            $closeBookCheck = $cek->getResult();
+            if ($closeBookCheck == TRUE) {
+                $data['is_closed'] = 'TRUE';
+            } else {
+                $data['is_closed'] = 'FALSE';
+            }
+        }else{
+            $data['is_closed'] = 'FALSE';
+        }
+
+
+        // Menggunakan Query Builder untuk join tabel lokasi1 dan satuan1
+        $data['dtpindahlokasi'] = $this->objPindahLokasi->getAll();
+        $data['dtlokasi'] = $this->objLokasi->getAll();
+        $data['dtsatuan'] = $this->objSatuan->getAll();
+        return view('pindahlokasi/index', $data);
     }
 
     public function printPDF($id = null)
@@ -60,31 +76,31 @@ class PindahLokasi extends ResourceController
                 return redirect()->back()->with('error', 'Data tidak ditemukan.');
             }
         }
-    
+
         $data['dtlokasi'] = $this->objLokasi->getAll();
         $data['dtsatuan'] = $this->objSatuan->getAll();
-        
+
         // Debugging: Tampilkan konten HTML sebelum PDF
         $html = view('pindahlokasi/printPDF', $data);
         // echo $html;
         // exit; // Jika perlu debugging
-    
+
         // Buat PDF baru
         $pdf = new TCPDF('landscape', PDF_UNIT, 'A4', true, 'UTF-8', false);
-    
+
         // Hapus header/footer default
         $pdf->setPrintHeader(false);
         $pdf->setPrintFooter(false);
-    
+
         // Set font
         $pdf->SetFont('helvetica', '', 12);
-    
+
         // Tambah halaman baru
         $pdf->AddPage();
-    
+
         // Cetak konten menggunakan WriteHTML
         $pdf->writeHTML($html, true, false, true, false, '');
-    
+
         // Set tipe respons menjadi PDF
         $this->response->setContentType('application/pdf');
         $pdf->Output('pindahlokasi.pdf', 'I');
@@ -151,7 +167,7 @@ class PindahLokasi extends ResourceController
      */
     public function edit($id = null)
     {
-         // Cek apakah pengguna memiliki peran admin
+        // Cek apakah pengguna memiliki peran admin
         if (!in_groups('admin')) {
             return redirect()->to('/')->with('error', 'Anda tidak memiliki akses');
         }
@@ -181,33 +197,33 @@ class PindahLokasi extends ResourceController
      */
     public function update($id = null)
     {
-          // Cek apakah pengguna memiliki peran admin
-    if (!in_groups('admin')) {
-        return redirect()->to('/')->with('error', 'Anda tidak memiliki akses');
-    }
+        // Cek apakah pengguna memiliki peran admin
+        if (!in_groups('admin')) {
+            return redirect()->to('/')->with('error', 'Anda tidak memiliki akses');
+        }
 
-    // Cek apakah data dengan ID yang diberikan ada di database
-    $existingData = $this->objPindahLokasi->find($id);
-    if (!$existingData) {
-        return redirect()->to(site_url('pindahlokasi'))->with('error', 'Data tidak ditemukan');
-    }
+        // Cek apakah data dengan ID yang diberikan ada di database
+        $existingData = $this->objPindahLokasi->find($id);
+        if (!$existingData) {
+            return redirect()->to(site_url('pindahlokasi'))->with('error', 'Data tidak ditemukan');
+        }
 
-    // Ambil data yang diinputkan dari form
-    $data = [
-        'nota_pindah'      => $this->request->getVar('nota_pindah'),
-        'id_lokasi_asal'   => $this->request->getVar('id_lokasi_asal'),
-        'id_lokasi_tujuan' => $this->request->getVar('id_lokasi_tujuan'),
-        'nama_stock'       => $this->request->getVar('nama_stock'),
-        'id_satuan'        => $this->request->getVar('id_satuan'),
-        'qty_1'            => $this->request->getVar('qty_1'),
-        'qty_2'            => $this->request->getVar('qty_2'),
-        'tanggal'          => $this->request->getVar('tanggal'),
-    ];
+        // Ambil data yang diinputkan dari form
+        $data = [
+            'nota_pindah'      => $this->request->getVar('nota_pindah'),
+            'id_lokasi_asal'   => $this->request->getVar('id_lokasi_asal'),
+            'id_lokasi_tujuan' => $this->request->getVar('id_lokasi_tujuan'),
+            'nama_stock'       => $this->request->getVar('nama_stock'),
+            'id_satuan'        => $this->request->getVar('id_satuan'),
+            'qty_1'            => $this->request->getVar('qty_1'),
+            'qty_2'            => $this->request->getVar('qty_2'),
+            'tanggal'          => $this->request->getVar('tanggal'),
+        ];
 
-    // Update data berdasarkan ID
-    $this->objPindahLokasi->update($id, $data);
+        // Update data berdasarkan ID
+        $this->objPindahLokasi->update($id, $data);
 
-    return redirect()->to(site_url('pindahlokasi'))->with('success', 'Data berhasil diupdate.');
+        return redirect()->to(site_url('pindahlokasi'))->with('success', 'Data berhasil diupdate.');
     }
 
     /**
@@ -222,5 +238,4 @@ class PindahLokasi extends ResourceController
         $this->db->table('pindahlokasi1')->where(['id_pindah' => $id])->delete();
         return redirect()->to(site_url('pindahlokasi'))->with('Sukses', 'Data Berhasil Dihapus');
     }
-
 }

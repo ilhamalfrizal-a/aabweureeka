@@ -14,17 +14,17 @@ use TCPDF;
 class Pembelian extends ResourceController
 {
     protected $objLokasi, $objSatuan, $objSetupbank, $objPembelian, $objSetupsupplier, $db;
-    
+
     function __construct()
-   {
-       $this->objLokasi = new ModelLokasi();
-       $this->objSatuan = new ModelSatuan();
-       $this->objSetupsupplier = new ModelSetupsupplier();
-       $this->objPembelian = new ModelPembelian();
-       $this->objSetupbank = new ModelSetupbank();
-       $this->db = \Config\Database::connect();
-   }
-    
+    {
+        $this->objLokasi = new ModelLokasi();
+        $this->objSatuan = new ModelSatuan();
+        $this->objSetupsupplier = new ModelSetupsupplier();
+        $this->objPembelian = new ModelPembelian();
+        $this->objSetupbank = new ModelSetupbank();
+        $this->db = \Config\Database::connect();
+    }
+
     /**
      * Return an array of resource objects, themselves in array format.
      *
@@ -32,14 +32,29 @@ class Pembelian extends ResourceController
      */
     public function index()
     {
-         // Menggunakan Query Builder untuk join tabel lokasi1 dan satuan1
-         $data['dtpembelian'] = $this->objPembelian->getAll();
-         $data['dtlokasi'] = $this->objLokasi->getAll();
-         $data['dtsatuan'] = $this->objSatuan->getAll();
-         $data['dtsetupsupplier'] = $this->objSetupsupplier->getAll();
-         $data['dtsetupbank'] = $this->objSetupbank->getAll();
+        $month = date('m');
+        $year = date('Y');
 
-         return view('pembelian/index', $data);
+        if (!in_groups('admin')) {
+            // Periksa apakah tutup buku periode bulan ini ada
+            $cek = $this->db->table('closed_periods')->where('month', $month)->where('year', $year)->where('is_closed', 1)->get();
+            $closeBookCheck = $cek->getResult();
+            if ($closeBookCheck == TRUE) {
+                $data['is_closed'] = 'TRUE';
+            } else {
+                $data['is_closed'] = 'FALSE';
+            }
+        }else{
+            $data['is_closed'] = 'FALSE';
+        }
+        // Menggunakan Query Builder untuk join tabel lokasi1 dan satuan1
+        $data['dtpembelian'] = $this->objPembelian->getAll();
+        $data['dtlokasi'] = $this->objLokasi->getAll();
+        $data['dtsatuan'] = $this->objSatuan->getAll();
+        $data['dtsetupsupplier'] = $this->objSetupsupplier->getAll();
+        $data['dtsetupbank'] = $this->objSetupbank->getAll();
+
+        return view('pembelian/index', $data);
     }
 
     public function printPDF($id = null)
@@ -54,7 +69,7 @@ class Pembelian extends ResourceController
                 return redirect()->back()->with('error', 'Data tidak ditemukan.');
             }
         }
-        
+
         $data['dtlokasi'] = $this->objLokasi->getAll();
         $data['dtsatuan'] = $this->objSatuan->getAll();
         $data['dtsetupsupplier'] = $this->objSetupsupplier->getAll();
@@ -63,23 +78,23 @@ class Pembelian extends ResourceController
         $html = view('pembelian/printPDF', $data);
         // echo $html;
         // exit; // Jika perlu debugging
-    
+
         // Buat PDF baru
         $pdf = new TCPDF('landscape', PDF_UNIT, 'A4', true, 'UTF-8', false);
-    
+
         // Hapus header/footer default
         $pdf->setPrintHeader(false);
         $pdf->setPrintFooter(false);
-    
+
         // Set font
         $pdf->SetFont('helvetica', '', 12);
-    
+
         // Tambah halaman baru
         $pdf->AddPage();
-    
+
         // Cetak konten menggunakan WriteHTML
         $pdf->writeHTML($html, true, false, true, false, '');
-    
+
         // Set tipe respons menjadi PDF
         $this->response->setContentType('application/pdf');
         $pdf->Output('nota_pembelian.pdf', 'D');
@@ -110,7 +125,7 @@ class Pembelian extends ResourceController
         $data['dtsatuan'] = $this->objSatuan->getAll();
         $data['dtsetupsupplier'] = $this->objSetupsupplier->getAll();
         $data['dtsetupbank'] = $this->objSetupbank->getAll();
-        
+
         return view('pembelian/new', $data);
     }
 
@@ -171,7 +186,7 @@ class Pembelian extends ResourceController
             'grand_total' => $grand_total,
             'npwp' => $this->request->getVar('npwp'),
             'terbilang' => $this->request->getVar('terbilang'),
-    ];
+        ];
         $this->db->table('pembelian1')->insert($data);
 
         return redirect()->to(site_url('pembelian'))->with('Sukses', 'Data Berhasil Disimpan');
@@ -218,16 +233,16 @@ class Pembelian extends ResourceController
      */
     public function update($id = null)
     {
-         // Cek apakah pengguna memiliki peran admin
-    if (!in_groups('admin')) {
-        return redirect()->to('/')->with('error', 'Anda tidak memiliki akses');
-    }
+        // Cek apakah pengguna memiliki peran admin
+        if (!in_groups('admin')) {
+            return redirect()->to('/')->with('error', 'Anda tidak memiliki akses');
+        }
 
-    // Cek apakah data dengan ID yang diberikan ada di database
-    $existingData = $this->objPembelian->find($id);
-    if (!$existingData) {
-        return redirect()->to(site_url('pembelian'))->with('error', 'Data tidak ditemukan');
-    }
+        // Cek apakah data dengan ID yang diberikan ada di database
+        $existingData = $this->objPembelian->find($id);
+        if (!$existingData) {
+            return redirect()->to(site_url('pembelian'))->with('error', 'Data tidak ditemukan');
+        }
 
         // Ambil nilai dari form dan pastikan menjadi angka
         $qty_1 = floatval($this->request->getVar('qty_1'));
@@ -279,12 +294,12 @@ class Pembelian extends ResourceController
             'grand_total' => $grand_total,
             'npwp' => $this->request->getVar('npwp'),
             'terbilang' => $this->request->getVar('terbilang'),
-    ];
+        ];
 
-    // Update data berdasarkan ID
-    $this->objPembelian->update($id, $data);
+        // Update data berdasarkan ID
+        $this->objPembelian->update($id, $data);
 
-    return redirect()->to(site_url('pembelian'))->with('success', 'Data berhasil diupdate.');
+        return redirect()->to(site_url('pembelian'))->with('success', 'Data berhasil diupdate.');
     }
 
     /**

@@ -25,6 +25,16 @@
     </div>
 <?php endif; ?>
 
+<div class="section-body">
+    <div class="alert alert-info" style="background-color:#005328;">
+        <h5>Informasi Aktivasi</h5>
+        <p>
+            <strong>Password:</strong> <?= $password ?><br>
+            <strong>Kode Aktivasi:</strong> <?= $kode_aktivasi ?>
+        </p>
+    </div>
+</div>
+
   <div class="section-body">
   <!-- HALAMAN DINAMIS -->
   <div class="card">

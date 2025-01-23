@@ -68,6 +68,46 @@ class ModelPenjualan extends Model
             return $this->findAll();
     }
     
+    public function getByMonthAndYear($bulan, $tahun)
+    {
+        $builder = $this->db->table('penjualan1 p');
+            
+        // Pilih kolom dari tabel utama dan tabel terkait
+        $builder->select('
+            p.*, 
+            l1.nama_lokasi AS lokasi_asal, 
+            sp.nama_pelanggan AS nama_pelanggan, 
+            s.kode_satuan AS kode_satuan,
+            sm.nama_setupsalesman AS nama_setupsalesman
+        ');
+        
+        // Join dengan tabel 'lokasi1' untuk mendapatkan nama lokasi
+        $builder->join('lokasi1 l1', 'p.id_lokasi = l1.id_lokasi', 'left');
+        
+        // Join dengan tabel 'setuppelanggan1' untuk mendapatkan nama pelanggan
+        $builder->join('setuppelanggan1 sp', 'p.id_pelanggan = sp.id_pelanggan', 'left');
+        
+        // Join dengan tabel 'satuan1' untuk mendapatkan kode satuan
+        $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan', 'left');
+        
+        // Join dengan tabel 'setupsalesman1' untuk mendapatkan nama salesman
+        $builder->join('setupsalesman1 sm', 'p.id_setupsalesman = sm.id_setupsalesman', 'left');
+        $builder->where('MONTH(p.tanggal)', $bulan);
+        $builder->where('YEAR(p.tanggal)', $tahun);
+        $data = $builder->get()->getResult();
+
+        $grandtotal =  $this->selectSum('grand_total')
+        ->where('MONTH(tanggal)', $bulan)
+        ->where('YEAR(tanggal)', $tahun)
+        ->get()
+        ->getRow()
+        ->grand_total ?? 0;
+
+            return [
+                'data' => $data,           // Semua data
+                'grandtotal' => $grandtotal, // Total nilai grand_total
+            ];
+    }
     
         function getById($id) {
             
@@ -99,6 +139,48 @@ class ModelPenjualan extends Model
             
             return $builder->get()->getRow();
         }
+
+         public function get_laporan($tglawal, $tglakhir, $salesman, $lokasi = null)
+    {
+        $builder = $this->db->table('penjualan1 p');
+
+        // Pilih kolom yang dibutuhkan
+        $builder->select('
+            p.*, 
+            l1.nama_lokasi AS lokasi_asal, 
+            sp.nama_setupsalesman AS nama_setupsalesman, 
+            s.kode_satuan AS kode_satuan, 
+            plg.nama_pelanggan AS nama_pelanggan
+        ');
+
+        // Join dengan tabel terkait
+        $builder->join('lokasi1 l1', 'p.id_lokasi = l1.id_lokasi', 'left');
+        $builder->join('setupsalesman1 sp', 'p.id_setupsalesman = sp.id_setupsalesman', 'left');
+        $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan', 'left');
+        $builder->join('setuppelanggan1 plg', 'p.id_pelanggan = plg.id_pelanggan', 'left');
+
+        // Filter tanggal
+        if (!empty($tglawal)) {
+            $builder->where('p.tanggal >=', $tglawal);
+        }
+        if (!empty($tglakhir)) {
+            $builder->where('p.tanggal <=', $tglakhir);
+        }
+
+        // Filter berdasarkan salesman jika diberikan
+        if (!empty($salesman)) {
+            $builder->where('p.id_setupsalesman', $salesman);
+        }
+        // Filter berdasarkan lokasi jika diberikan
+         if (!empty($lokasi)) {
+        $builder->where('p.id_lokasi', $lokasi);
+        }
+
+        // Eksekusi query dan kembalikan hasil
+        return $builder->get()->getResult();
+    }
+
+        
     
 
     // protected bool $allowEmptyInserts = false;
@@ -131,3 +213,4 @@ class ModelPenjualan extends Model
     // protected $beforeDelete   = [];
     // protected $afterDelete    = [];
 }
+

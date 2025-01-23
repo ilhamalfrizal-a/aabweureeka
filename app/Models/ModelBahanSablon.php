@@ -51,6 +51,28 @@ class ModelBahanSablon extends Model
         return $this->findAll();
     }
 
+    public function getByMonthAndYear($bulan, $tahun)
+    {
+        $builder = $this->db->table('bahansablon1 p'); // Ganti dengan nama tabel yang benar
+        
+        // Pilih kolom yang diperlukan, gunakan alias dengan benar
+        $builder->select('p.*, l1.nama_lokasi AS lokasi_asal, l2.nama_lokasi AS lokasi_tujuan,  s.kode_satuan');
+        
+        // Join yang benar, pastikan nama tabel dan kolomnya sesuai
+        $builder->join('lokasi1 l1', 'p.id_lokasi_asal = l1.id_lokasi'); // Lokasi asal
+        $builder->join('lokasi1 l2', 'p.id_lokasi_tujuan = l2.id_lokasi'); // Lokasi tujuan
+        $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan'); // Satuan
+        $builder->where('MONTH(p.tanggal)', $bulan);
+        $builder->where('YEAR(p.tanggal)', $tahun);
+        $query = $builder->get(); // Eksekusi query
+        $data = $query->getResult(); // Kembalikan hasil query
+
+    
+            return [
+                'data' => $data,           // Semua data
+            ];
+    }
+
     function getById($id) {
         $builder = $this->db->table('bahansablon1 p');
         
@@ -65,6 +87,28 @@ class ModelBahanSablon extends Model
         
         $query = $builder->get();
         return $query->getRow(); // Mengembalikan satu baris sebagai objek
+    }
+
+    public function get_laporan($tglawal, $tglakhir = null)
+    {
+        $builder = $this->db->table('bahansablon1 p');
+       // Pilih kolom yang diperlukan, dengan join yang sesuai
+       $builder->select('p.*, l1.nama_lokasi AS lokasi_asal, l2.nama_lokasi AS lokasi_tujuan, s.kode_satuan');
+       $builder->join('lokasi1 l1', 'p.id_lokasi_asal = l1.id_lokasi');
+       $builder->join('lokasi1 l2', 'p.id_lokasi_tujuan = l2.id_lokasi');
+       $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan');
+
+
+        // Filter tanggal
+        if (!empty($tglawal)) {
+            $builder->where('p.tanggal >=', $tglawal);
+        }
+        if (!empty($tglakhir)) {
+            $builder->where('p.tanggal <=', $tglakhir);
+        }
+
+
+        return $builder->get()->getResult();
     }
 
     // // Validation

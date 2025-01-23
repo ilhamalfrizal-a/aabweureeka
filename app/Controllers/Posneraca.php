@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\PosNeracaModel;
 
+use CodeIgniter\Model;
+use App\Models\ModelPosneraca;
+
+use App\Models\PosNeracaModel;
+use App\Models\ModelKlasifikasi;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 // use App\Models\PosNeracaModel;
@@ -10,10 +14,13 @@ use CodeIgniter\RESTful\ResourceController;
 class Posneraca extends ResourceController
 {
     protected $objPosneraca;
+    protected $objKlasifikasi;
+    protected $db;
     //Inisialisasi object data
     function __construct()
     {
-        $this->objPosneraca = new PosNeracaModel();
+        $this->objPosneraca = new ModelPosneraca();
+        $this->objKlasifikasi = new ModelKlasifikasi();
         $this->db = \Config\Database::connect();
     }
     
@@ -24,8 +31,8 @@ class Posneraca extends ResourceController
      */
     public function index()
     {
-        $model = new PosNeracaModel();
-        $data['dtposneraca'] = $this->objPosneraca->findAll();
+        $data['dtposneraca'] = $this->objPosneraca->getAll();
+        $data['dtklasifikasi'] = $this->objKlasifikasi->getAll();
         return view('posneraca/index', $data);
     }
 
@@ -49,10 +56,8 @@ class Posneraca extends ResourceController
     public function new()
     {
          
-        $builder = $this->db->table('pos_neraca');
-        $query = $builder->get();
-        $data['dtposneraca'] = $query->getResult();
-
+        $data['dtposneraca'] = $this->objPosneraca->getAll();
+        $data['dtklasifikasi'] = $this->objKlasifikasi->getAll();
         return view('posneraca/new', $data);
     }
 
@@ -65,8 +70,9 @@ class Posneraca extends ResourceController
     {
         $data = $this->request->getPost();
         $data = [
-            'id_posneraca' => $this->request->getVar('id_posneraca'),
             'nama_posneraca' => $this->request->getVar('nama_posneraca'),
+            'kode_posneraca' => $this->request->getVar('kode_posneraca'),
+            'id_klasifikasi' => $this->request->getVar('id_klasifikasi'),
             'posisi_posneraca' => $this->request->getVar('posisi_posneraca'),
         ];
         $this->db->table('pos_neraca')->insert($data);
@@ -83,15 +89,19 @@ class Posneraca extends ResourceController
      */
     public function edit($id = null)
     {
-        $builder = $this->db->table('pos_neraca');
-        $query = $builder->get();
-        $posneraca = $this->objPosneraca->find($id);
-        if(is_object($posneraca)){
-            $data['dtposneraca'] = $posneraca;
-            return view('posneraca/edit', $data);
-        }else{
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
+       // Ambil data berdasarkan ID
+       $dtposneraca = $this->objPosneraca->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtposneraca) {
+           return redirect()->to(site_url('posneraca'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtposneraca'] = $dtposneraca;
+       $data['dtklasifikasi'] = $this->objKlasifikasi->findAll();
+       return view('posneraca/edit', $data);
         
     }
 
@@ -104,7 +114,17 @@ class Posneraca extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $data = [
+            'nama_posneraca' => $this->request->getVar('nama_posneraca'),
+            'kode_posneraca' => $this->request->getVar('kode_posneraca'),
+            'id_klasifikasi' => $this->request->getVar('id_klasifikasi'),
+            'posisi_posneraca' => $this->request->getVar('posisi_posneraca'),
+        ];
+        // Update data berdasarkan ID
+        $this->objPosneraca->update($id, $data);
+
+        return redirect()->to(site_url('posneraca'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

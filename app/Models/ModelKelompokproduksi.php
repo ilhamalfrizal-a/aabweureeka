@@ -12,11 +12,18 @@ class ModelKelompokproduksi extends Model
     protected $returnType       = 'object';
     // protected $useSoftDeletes   = false;
     // protected $protectFields    = true;
-    protected $allowedFields    = ['kode_kelproduksi', 'nama_kelproduksi'];
+    protected $allowedFields    = ['kode_kelproduksi', 'nama_kelproduksi', 'id_interface'];
 
     public function getAll()
     {
         return $this->findAll(); // Mengambil semua data dari tabel lokasi1
+    }
+
+    public function getGroupWithInterface()
+    {
+        return $this->select('kelompokproduksi1.*, interface1.rekening_biaya')
+                    ->join('interface1', 'interface1.id_interface = kelompokproduksi1.id_interface', 'left')
+                    ->findAll();
     }
 
     // protected bool $allowEmptyInserts = false;

@@ -9,8 +9,8 @@ class ModelStock extends Model
     protected $table            = 'stock1';
     protected $primaryKey       = 'id_stock';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['id_lokasi', 'kode_lokasi', 'nama_lokasi', 'satuan_stock', 'jml_harga'];
-    protected $useTimestamps = true;
+    protected $allowedFields    = ['id_lokasi','id_group','id_kelompok','id_setupsupplier', 'kode_lokasi', 'nama_lokasi','kode', 'nama_barang', 'satuan_stock', 'jml_harga'];
+    // protected $useTimestamps = true;
 
     function getAll() {
         $builder = $this->db->table('stock1');
@@ -18,6 +18,20 @@ class ModelStock extends Model
         $query   = $builder->get();
         return $query->getResult();
     }
+
+    public function getStockWithRelations()
+{
+    return $this->select('stock1.*, 
+                          lokasi1.nama_lokasi, 
+                          group1.nama_group, 
+                          kelompok1.nama_kelompok, 
+                          setupsupplier1.nama as nama_setupsupplier')
+        ->join('lokasi1', 'lokasi1.id_lokasi = stock1.id_lokasi', 'left')
+        ->join('group1', 'group1.id_group = stock1.id_group', 'left')
+        ->join('kelompok1', 'kelompok1.id_kelompok = stock1.id_kelompok', 'left')
+        ->join('setupsupplier1', 'setupsupplier1.id_setupsupplier = stock1.id_setupsupplier', 'left')
+        ->findAll();
+}
 
 
     // protected $useAutoIncrement = true;
@@ -32,7 +46,7 @@ class ModelStock extends Model
 
     // // Dates
     // protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
+    // protected $createdField  = 'created_at';
     // protected $updatedField  = 'updated_at';
     // protected $deletedField  = 'deleted_at';
 

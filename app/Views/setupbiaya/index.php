@@ -33,9 +33,9 @@
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #6777ef; border-width: 4px; border-style: solid;">
+                      <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #009548; border-width: 4px; border-style: solid;">
                       <thead>
-                        <tr style="background-color: #6777ef; color: white;">
+                        <tr style="background-color: #009548; color: white;">
                           <th>No</th>
                           <th>Rekening</th>
                           <th>Kode</th>
@@ -48,14 +48,15 @@
                         <?php foreach ($dtsetupbiaya as $key => $value) : ?>
                         <tr>
                           <td><?= $key+1 ?></td>
-                          <td><?= $value->rekening_setupbiaya ?></td>
+                          <td><?= $value->rekening_biaya ?></td>
                           <td><?= $value->kode_setupbiaya ?></td>
                           <td><?= $value->nama_setupbiaya ?></td>
                           
                           
                           <td class="text-center">
                             <!-- Tombol Edit Data -->
-                           
+                            <a href="<?= site_url('setupbiaya/' . $value->id_setupbiaya) .  '/edit' ?>" class="btn btn-warning"><i class="fas fa-pencil-alt btn-small"></i> Edit</a>
+                            <input type="hidden" name="_method" value="PUT">
                             <!-- Tombol Hapus Data -->
                             <form action="<?= site_url('setupbiaya/'.$value->id_setupbiaya) ?>" method="post" id="del-<?=$value->id_setupbiaya?>" class="d-inline">
                               <?= csrf_field() ?>

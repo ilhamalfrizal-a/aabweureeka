@@ -20,7 +20,32 @@
   <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/components.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
+  <style>
+    .btn-read {
+        pointer-events: none; /* Tidak bisa diklik */
+        opacity: 0.5;         /* Tampilan redup seperti disabled */
+        cursor: not-allowed;  /* Kursor larangan */
+        position: relative;   /* Untuk posisi ikon */
+    }
 
+    .btn-read .lock-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1rem; /* Ukuran ikon */
+        color: #ffffff;  /* Warna ikon */
+    }
+    .navbar-bg {
+    background-color: #005328; /* Ganti dengan warna yang Anda inginkan */
+}
+
+.navbar .nav-link {
+    color: #FFFFFF !important; /* Ganti warna teks di navbar */
+}
+
+
+</style>
 
 </head>
 

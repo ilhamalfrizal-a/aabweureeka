@@ -33,12 +33,13 @@
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                    <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #6777ef; border-width: 4px; border-style: solid;">
+                    <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #009548; border-width: 4px; border-style: solid;">
                       <thead>
-                        <tr style="background-color: #6777ef; color: white;">
+                        <tr style="background-color: #009548; color: white;">
                           <th>No</th>
                           <th>Kode</th>
                           <th>Nama</th>
+                          <th>Rekening</th>
                           <th>Action</th>
                         </tr>
                       </thead>  
@@ -49,10 +50,12 @@
                           <td><?= $key+1 ?></td>
                           <td><?= $value->kode_kelproduksi ?></td>
                           <td><?= $value->nama_kelproduksi ?></td>
+                          <td><?= $value->rekening_biaya ?></td>
 
                           <td class="text-center">
                             <!-- Tombol Edit Data -->
-                           
+                            <a href="<?= site_url('kelompokproduksi/' . $value->id_kelproduksi) .  '/edit' ?>" class="btn btn-warning"><i class="fas fa-pencil-alt btn-small"></i> Edit</a>
+                            <input type="hidden" name="_method" value="PUT">
                             <!-- Tombol Hapus Data -->
                             <form action="<?= site_url('kelompokproduksi/'.$value->id_kelproduksi) ?>" method="post" id="del-<?=$value->id_kelproduksi?>" class="d-inline">
                               <?= csrf_field() ?>

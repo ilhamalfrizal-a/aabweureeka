@@ -54,6 +54,26 @@ class ModelLunasSalesman extends Model
         return $this->findAll();
     }
 
+    public function getByMonthAndYear($bulan, $tahun)
+    {
+        $builder = $this->db->table('lunassalesman1 p');
+        $builder->select('
+            p.*, 
+            sp.nama_setupsalesman AS nama_setupsalesman, 
+            sb.nama_setupbank AS nama_setupbank
+        ');
+        $builder->join('setupsalesman1 sp', 'p.id_setupsalesman = sp.id_setupsalesman', 'left');
+        $builder->join('setupbank1 sb', 'p.id_setupbank = sb.id_setupbank', 'left');
+        $builder->where('MONTH(p.tanggal)', $bulan);
+        $builder->where('YEAR(p.tanggal)', $tahun);
+        $query = $builder->get();
+        $data = $query->getResult();
+
+            return [
+                'data' => $data,           // Semua data
+            ];
+    }
+
     function getById($id)
     {
         // Memulai builder untuk tabel 'tutangusaha1' dengan alias 'p'

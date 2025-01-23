@@ -8,6 +8,8 @@ use CodeIgniter\RESTful\ResourceController;
 
 class Setuppelanggan extends ResourceController
 {
+    protected $objSetuppelanggan;
+    protected $db;
     // INISIALISASI OBJECT DATA
     function __construct()
     {
@@ -57,18 +59,41 @@ class Setuppelanggan extends ResourceController
      */
     public function create()
     {
-        $data = $this->request->getPost();
+        $nama_pelanggan = $this->request->getVar('nama_pelanggan');
+
+        // Ambil huruf pertama dari nama pelanggan
+        $kode_prefix = strtoupper(substr($nama_pelanggan, 0, 1));
+
+        // Cari kode terakhir yang dimulai dengan prefix ini
+        $builder = $this->db->table('setuppelanggan1');
+        $lastKode = $builder->select('kode_pelanggan')
+                            ->like('kode_pelanggan', $kode_prefix, 'after')
+                            ->orderBy('kode_pelanggan', 'DESC')
+                            ->limit(1)
+                            ->get()
+                            ->getRow();
+
+        // Hitung nomor urut baru
+        if ($lastKode) {
+            $lastNumber = intval(substr($lastKode->kode_pelanggan, 1));
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        // Format kode pelanggan baru (e.g., I00001)
+        $kode_pelanggan = $kode_prefix . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
         $data = [
-            'id_pelanggan' => $this->request->getVar('id_pelanggan'),
-            'kode_pelanggan' => $this->request->getVar('kode_pelanggan'),
-            'nama_pelanggan' => $this->request->getVar('nama_pelanggan'),
+            'kode_pelanggan' => $kode_pelanggan,
+            'nama_pelanggan' => $nama_pelanggan,
             'alamat_pelanggan' => $this->request->getVar('alamat_pelanggan'),
             'kota_pelanggan' => $this->request->getVar('kota_pelanggan'),
             'telp_pelanggan' => $this->request->getVar('telp_pelanggan'),
             'plafond' => $this->request->getVar('plafond'),
             'npwp' => $this->request->getVar('npwp'),
             'class_pelanggan' => $this->request->getVar('class_pelanggan'),
-            'tipe' =>$this->request->getVar('tipe'),
+            'tipe' => $this->request->getVar('tipe'),
             'tanggal' => $this->request->getVar('tanggal'),
             'saldo' => $this->request->getVar('saldo'),
         ];
@@ -86,7 +111,19 @@ class Setuppelanggan extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+        // Ambil data berdasarkan ID
+       $dtsetuppelanggan = $this->objSetuppelanggan->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtsetuppelanggan) {
+           return redirect()->to(site_url('setuppelanggan'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtsetuppelanggan'] = $dtsetuppelanggan;
+       
+       return view('setuppelanggan/edit', $data);
     }
 
     /**
@@ -98,7 +135,48 @@ class Setuppelanggan extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $nama_pelanggan = $this->request->getVar('nama_pelanggan');
+
+        // Ambil huruf pertama dari nama pelanggan
+        $kode_prefix = strtoupper(substr($nama_pelanggan, 0, 1));
+
+        // Cari kode terakhir yang dimulai dengan prefix ini
+        $builder = $this->db->table('setuppelanggan1');
+        $lastKode = $builder->select('kode_pelanggan')
+                            ->like('kode_pelanggan', $kode_prefix, 'after')
+                            ->orderBy('kode_pelanggan', 'DESC')
+                            ->limit(1)
+                            ->get()
+                            ->getRow();
+
+        // Hitung nomor urut baru
+        if ($lastKode) {
+            $lastNumber = intval(substr($lastKode->kode_pelanggan, 1));
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        // Format kode pelanggan baru (e.g., I00001)
+        $kode_pelanggan = $kode_prefix . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+        $data = [
+            'kode_pelanggan' => $kode_pelanggan,
+            'nama_pelanggan' => $nama_pelanggan,
+            'alamat_pelanggan' => $this->request->getVar('alamat_pelanggan'),
+            'kota_pelanggan' => $this->request->getVar('kota_pelanggan'),
+            'telp_pelanggan' => $this->request->getVar('telp_pelanggan'),
+            'plafond' => $this->request->getVar('plafond'),
+            'npwp' => $this->request->getVar('npwp'),
+            'class_pelanggan' => $this->request->getVar('class_pelanggan'),
+            'tipe' => $this->request->getVar('tipe'),
+            'tanggal' => $this->request->getVar('tanggal'),
+            'saldo' => $this->request->getVar('saldo'),
+        ];
+        // Update data berdasarkan ID
+        $this->objSetuppelanggan->update($id, $data);
+
+        return redirect()->to(site_url('setuppelanggan'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

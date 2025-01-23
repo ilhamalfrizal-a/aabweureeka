@@ -41,6 +41,17 @@ class ModelJurnalUmum extends Model
         return $this->findAll();
     }
 
+    public function getByMonthAndYear($bulan, $tahun)
+    {
+        $data = $this->where('MONTH(tanggal)', $bulan)
+            ->where('YEAR(tanggal)', $tahun)
+            ->findAll();
+
+
+            return [
+                'data' => $data,           // Semua data
+            ];
+    }
     function getById($id)
     {
         // Memulai builder untuk tabel 'tutangusaha1' dengan alias 'p'
@@ -55,6 +66,35 @@ class ModelJurnalUmum extends Model
         // Mengembalikan satu baris sebagai objek
         return $query->getRow();
     }
+
+    public function get_laporan($tglawal, $tglakhir = null)
+{
+    $builder = $this->db->table('jurnalumum1 p');
+
+    // Filter berdasarkan tanggal awal dan akhir
+    if (!empty($tglawal)) {
+        $builder->where('p.tanggal >=', $tglawal);
+    }
+    if (!empty($tglakhir)) {
+        $builder->where('p.tanggal <=', $tglakhir);
+    }
+
+    $data = $builder->get()->getResult();
+
+    // Hitung total debit dan kredit
+    $totalDebet = 0;
+    $totalKredit = 0;
+    foreach ($data as $row) {
+        $totalDebet += floatval($row->debet);
+        $totalKredit += floatval($row->kredit);
+    }
+
+    return [
+        'data' => $data,                 // Data laporan
+        'total_debet' => $totalDebet,    // Total debit
+        'total_kredit' => $totalKredit,  // Total kredit
+    ];
+}
 
     // // Validation
     // protected $validationRules      = [];

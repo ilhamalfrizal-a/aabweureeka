@@ -8,6 +8,8 @@ use CodeIgniter\RESTful\ResourceController;
 
 class Satuan extends ResourceController
 {
+    protected $objSatuan;
+    protected $db;
     // INISIALISASI OBJECT DATA
     function __construct()
     {
@@ -79,16 +81,19 @@ class Satuan extends ResourceController
      */
     public function edit($id = null)
     {
-        $builder = $this->db->table('satuan1');
-        $query = $builder->get();
-        $satuan = $this->objSatuan->find($id);
-        if(is_object($satuan)){
-            $data['dtsatuan'] = $satuan;
-            $data['dtsatuan'] = $query->getResult();
-            return view('satuan/edit', $data);
-        }else{
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
+       // Ambil data berdasarkan ID
+       $dtsatuan = $this->objSatuan->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtsatuan) {
+           return redirect()->to(site_url('satuan'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtsatuan'] = $dtsatuan;
+       
+       return view('satuan/edit', $data);
     }
 
     /**
@@ -100,7 +105,16 @@ class Satuan extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $data = [
+           'id_satuan' => $this->request->getVar('id_satuan'),
+            'kode_satuan' => $this->request->getVar('kode_satuan'),
+            'nama_satuan' => $this->request->getVar('nama_satuan'),
+        ];
+        // Update data berdasarkan ID
+        $this->objSatuan->update($id, $data);
+
+        return redirect()->to(site_url('satuan'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

@@ -12,7 +12,14 @@ class ModelSetupbiaya extends Model
     protected $returnType       = 'object';
     // protected $useSoftDeletes   = false;
     // protected $protectFields    = true;
-    protected $allowedFields    = ['kode_setupbiaya', 'nama_setupbiaya', 'rekening_setupbiaya'];
+    protected $allowedFields    = ['kode_setupbiaya', 'nama_setupbiaya', 'id_interface'];
+
+    public function getGroupWithInterface()
+    {
+        return $this->select('setupbiaya1.*, interface1.rekening_biaya')
+                    ->join('interface1', 'interface1.id_interface = setupbiaya1.id_interface', 'left')
+                    ->findAll();
+    }
 
     // protected bool $allowEmptyInserts = false;
     // protected bool $updateOnlyChanged = true;

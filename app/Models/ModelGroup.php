@@ -12,11 +12,18 @@ class ModelGroup extends Model
     protected $returnType       = 'object';
     // protected $useSoftDeletes   = false;
     // protected $protectFields    = true;
-    protected $allowedFields    = ['kode_group', 'nama_group', 'rekening_group'];
+    protected $allowedFields    = ['kode_group', 'nama_group', 'id_interface'];
 
     public function getAll()
     {
         return $this->findAll(); // Mengambil semua data dari tabel lokasi1
+    }
+
+    public function getGroupWithInterface()
+    {
+        return $this->select('group1.*, interface1.rekening_biaya')
+                    ->join('interface1', 'interface1.id_interface = group1.id_interface', 'left')
+                    ->findAll();
     }
 
     // protected bool $allowEmptyInserts = false;

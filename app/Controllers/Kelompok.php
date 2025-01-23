@@ -8,6 +8,7 @@ use CodeIgniter\RESTful\ResourceController;
 
 class Kelompok extends ResourceController
 {
+    protected $objKelompok, $db;
     // INISIALISASI OBJECT DATA
     function __construct()
     {
@@ -78,7 +79,19 @@ class Kelompok extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+        // Ambil data berdasarkan ID
+       $dtkelompok = $this->objKelompok->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtkelompok) {
+           return redirect()->to(site_url('kelompok'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtkelompok'] = $dtkelompok;
+       
+       return view('kelompok/edit', $data);
     }
 
     /**
@@ -90,7 +103,16 @@ class Kelompok extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $data = [
+            'id_kelompok' => $this->request->getVar('id_kelompok'),
+            'kode_kelompok' => $this->request->getVar('kode_kelompok'),
+            'nama_kelompok' => $this->request->getVar('nama_kelompok'),
+        ];
+        // Update data berdasarkan ID
+        $this->objKelompok->update($id, $data);
+
+        return redirect()->to(site_url('kelompok'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

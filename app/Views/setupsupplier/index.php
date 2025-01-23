@@ -29,13 +29,13 @@
   <!-- HALAMAN DINAMIS -->
   <div class="card">
                   <div class="card-header">
-                    <h4>Setup Satuan</h4>
+                    <h4>Setup Supplier</h4>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #6777ef; border-width: 4px; border-style: solid;">
+                      <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #009548; border-width: 4px; border-style: solid;">
                       <thead>
-                        <tr style="background-color: #6777ef; color: white;">
+                        <tr style="background-color: #009548; color: white;">
                           <th>No</th>
                           <th>Kode</th>
                           <th>Nama</th>
@@ -66,7 +66,8 @@
 
                           <td class="text-center">
                             <!-- Tombol Edit Data -->
-                           
+                            <a href="<?= site_url('setupsupplier/' . $value->id_setupsupplier) .  '/edit' ?>" class="btn btn-warning"><i class="fas fa-pencil-alt btn-small"></i> Edit</a>
+                            <input type="hidden" name="_method" value="PUT">
                             <!-- Tombol Hapus Data -->
                             <form action="<?= site_url('setupsupplier/'.$value->id_setupsupplier) ?>" method="post" id="del-<?=$value->id_setupsupplier?>" class="d-inline">
                               <?= csrf_field() ?>

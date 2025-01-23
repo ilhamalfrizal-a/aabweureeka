@@ -23,11 +23,11 @@ class CreatePosNeracaTable extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 6,
             ],    
-            // 'klasifikasi' => [
-            //     'type' => 'VARCHAR',
-            //     'constraint' => 50,
-            //     'null' => false,
-            // ],
+           'id_klasifikasi' => [
+                'type'           => 'INT',
+                'constraint'     => 6,
+                'unsigned'       => true,
+            ],
             'posisi_posneraca' => [
                 'type' => 'VARCHAR',
                 'constraint' => 10,
@@ -37,6 +37,9 @@ class CreatePosNeracaTable extends Migration
     
         // Menentukan primary key
         $this->forge->addKey('id_posneraca', true);
+        
+        // Menambahkan foreign key untuk lokasi_asal yang merujuk ke lokasi1.kode_lokasi
+        $this->forge->addForeignKey('id_klasifikasi', 'klasifikasi1', 'id_klasifikasi', 'CASCADE', 'CASCADE');
         
         // Membuat tabel
         $this->forge->createTable('pos_neraca');

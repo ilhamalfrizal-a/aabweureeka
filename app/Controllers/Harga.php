@@ -8,6 +8,7 @@ use CodeIgniter\RESTful\ResourceController;
 
 class Harga extends ResourceController
 {
+    protected $objHarga, $db;
     function __construct()
     {
         $this->objHarga = new ModelHarga();
@@ -80,7 +81,19 @@ class Harga extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+         // Ambil data berdasarkan ID
+       $dtharga = $this->objHarga->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtharga) {
+           return redirect()->to(site_url('harga'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtharga'] = $dtharga;
+       
+       return view('harga/edit', $data);
     }
 
     /**
@@ -92,7 +105,19 @@ class Harga extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $data = [
+            'id_harga' => $this->request->getVar('id_harga'),
+            'kode_harga' => $this->request->getVar('kode_harga'),
+            'nama_barang' => $this->request->getVar('nama_barang'),
+            'harga_jualexc' => $this->request->getVar('harga_jualexc'),
+            'harga_jualinc' => $this->request->getVar('harga_jualinc'),
+            'harga_beli' => $this->request->getVar('harga_beli'),
+        ];
+        // Update data berdasarkan ID
+        $this->objHarga->update($id, $data);
+
+        return redirect()->to(site_url('harga'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

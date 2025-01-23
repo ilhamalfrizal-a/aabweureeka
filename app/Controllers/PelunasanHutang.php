@@ -33,6 +33,21 @@ class PelunasanHutang extends ResourceController
      */
     public function index()
     {
+        $month = date('m');
+        $year = date('Y');
+
+        if (!in_groups('admin')) {
+            // Periksa apakah tutup buku periode bulan ini ada
+            $cek = $this->db->table('closed_periods')->where('month', $month)->where('year', $year)->where('is_closed', 1)->get();
+            $closeBookCheck = $cek->getResult();
+            if ($closeBookCheck == TRUE) {
+                $data['is_closed'] = 'TRUE';
+            } else {
+                $data['is_closed'] = 'FALSE';
+            }
+        }else{
+            $data['is_closed'] = 'FALSE';
+        }
         $data['dtpelunasanhutang'] = $this->objPelunasanHutang->getAll();
         $data['dtsetupsupplier'] = $this->objSetupsupplier->findAll();
         $data['dtsetupbank'] = $this->objSetupbank->findAll();

@@ -8,6 +8,7 @@ use CodeIgniter\RESTful\ResourceController;
 
 class Setupsalesman extends ResourceController
 {
+    protected $objSetupsalesman, $db;
     // INISIALISASI OBJECT DATA
     function __construct()
     {
@@ -21,6 +22,21 @@ class Setupsalesman extends ResourceController
      */
     public function index()
     {
+        $month = date('m');
+        $year = date('Y');
+
+        if (!in_groups('admin')) {
+            // Periksa apakah tutup buku periode bulan ini ada
+            $cek = $this->db->table('closed_periods')->where('month', $month)->where('year', $year)->where('is_closed', 1)->get();
+            $closeBookCheck = $cek->getResult();
+            if ($closeBookCheck == TRUE) {
+                $data['is_closed'] = 'TRUE';
+            } else {
+                $data['is_closed'] = 'FALSE';
+            }
+        }else{
+            $data['is_closed'] = 'FALSE';
+        }
         $data['dtsetupsalesman'] = $this->objSetupsalesman->findAll();
         return view('setupsalesman/index', $data);
     }
@@ -57,14 +73,25 @@ class Setupsalesman extends ResourceController
      */
     public function create()
     {
-        $data = $this->request->getPost();
-        $data = [
-            'id_setupsalesman' => $this->request->getVar('id_setupsalesman'),
-            'kode_setupsalesman' => $this->request->getVar('kode_setupsalesman'),
-            'nama_setupsalesman' => $this->request->getVar('nama_setupsalesman'),
-            'lokasi_setupsalesman' => $this->request->getVar('lokasi_setupsalesman'),
-            'tanggal_setupsalesman' => $this->request->getVar('tanggal_setupsalesman'),
-        ];
+        $namaSetupsalesman = $this->request->getVar('nama_setupsalesman');
+    
+    // Ekstrak huruf pertama dari nama
+    $initial = strtoupper(substr($namaSetupsalesman, 0, 1));
+
+    // Hitung jumlah entri dengan kode yang sama untuk menentukan nomor urut
+    $builder = $this->db->table('setupsalesman1');
+    $count = $builder->like('kode_setupsalesman', $initial, 'after')->countAllResults();
+
+    // Buat kode otomatis
+    $kodeSetupsalesman = $initial . str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+
+    // Data untuk disimpan
+    $data = [
+        'kode_setupsalesman' => $kodeSetupsalesman,
+        'nama_setupsalesman' => $namaSetupsalesman,
+        'lokasi_setupsalesman' => $this->request->getVar('lokasi_setupsalesman'),
+        'tanggal_setupsalesman' => $this->request->getVar('tanggal_setupsalesman'),
+    ];
         $this->db->table('setupsalesman1')->insert($data);
 
         return redirect()->to(site_url('setupsalesman'))->with('Sukses', 'Data Berhasil Disimpan');
@@ -79,7 +106,20 @@ class Setupsalesman extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+         // Ambil data berdasarkan ID
+       $dtsetupsalesman = $this->objSetupsalesman->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtsetupsalesman) {
+           return redirect()->to(site_url('posneraca'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtsetupsalesman'] = $dtsetupsalesman;
+       
+       return view('setupsalesman/edit', $data);
+        
     }
 
     /**
@@ -91,7 +131,29 @@ class Setupsalesman extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $namaSetupsalesman = $this->request->getVar('nama_setupsalesman');
+    
+        // Ekstrak huruf pertama dari nama
+        $initial = strtoupper(substr($namaSetupsalesman, 0, 1));
+    
+        // Hitung jumlah entri dengan kode yang sama untuk menentukan nomor urut
+        $builder = $this->db->table('setupsalesman1');
+        $count = $builder->like('kode_setupsalesman', $initial, 'after')->countAllResults();
+    
+        // Buat kode otomatis
+        $kodeSetupsalesman = $initial . str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+    
+        // Data untuk disimpan
+        $data = [
+            'kode_setupsalesman' => $kodeSetupsalesman,
+            'nama_setupsalesman' => $namaSetupsalesman,
+            'lokasi_setupsalesman' => $this->request->getVar('lokasi_setupsalesman'),
+            'tanggal_setupsalesman' => $this->request->getVar('tanggal_setupsalesman'),
+        ];
+        // Update data berdasarkan ID
+        $this->objSetupsalesman->update($id, $data);
+
+        return redirect()->to(site_url('setupsalesman'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

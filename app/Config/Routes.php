@@ -16,61 +16,71 @@ $routes->delete('/klasifikasi/(:any)', 'Klasifikasi::destroy/$1');
 
 // routes pos neraca
 $routes->get('/posneraca/new', 'Posneraca::new');
-$routes->get('/posneraca/(:segment)/new', 'Posneraca::edit/$1');
+// $routes->get('/posneraca/(:segment)/new', 'Posneraca::edit/$1');
 $routes->resource('posneraca');
 $routes->post('/posneraca', 'Posneraca::create');
 $routes->post('/posneraca/(:any)', 'Posneraca::delete/$1');
+$routes->put('/posneraca/(:segment)/edit', 'Posneraca::edit/$1');
+$routes->put('/posneraca/(:segment)', 'Posneraca::update/$1');
 
 // routes setup satuan
 $routes->get('/satuan/new', 'Satuan::new');
-$routes->get('/satuan/(:segment)/new', 'Satuan::edit/$1');
+// $routes->get('/satuan/(:segment)/new', 'Satuan::edit/$1');
 $routes->resource('satuan');
 $routes->post('/satuan', 'Satuan::create');
 $routes->post('/satuan/(:any)', 'Satuan::delete/$1');
 $routes->put('/satuan/(:segment)/edit', 'Satuan::edit/$1');
+$routes->put('/satuan/(:segment)', 'Satuan::update/$1');
+$routes->get('satuan', 'Satuan::index');
 
 // routes setup kelompok
 $routes->get('/kelompok/new', 'Kelompok::new');
-$routes->get('/kelompok/(:segment)/new', 'Kelompok::edit/$1');
+// $routes->get('/kelompok/(:segment)/new', 'Kelompok::edit/$1');
 $routes->resource('kelompok');
 $routes->post('/kelompok', 'Kelompok::create');
 $routes->post('/kelompok/(:any)', 'Kelompok::delete/$1');
 $routes->put('/kelompok/(:segment)/edit', 'Kelompok::edit/$1'); 
+$routes->put('/kelompok/(:segment)', 'Kelompok::update/$1');
+$routes->get('kelompok', 'Kelompok::index');
 
 // routes setup lokasi
 $routes->get('/lokasi/new', 'Lokasi::new');
-$routes->get('/lokasi/(:segment)/new', 'Lokasi::edit/$1');
+// $routes->get('/lokasi/(:segment)/new', 'Lokasi::edit/$1');
 $routes->resource('lokasi');
 $routes->post('/lokasi', 'Lokasi::create');
 $routes->post('/lokasi/(:any)', 'Lokasi::delete/$1');
 $routes->put('/lokasi/(:segment)/edit', 'Lokasi::edit/$1');
+$routes->put('/lokasi/(:segment)', 'Lokasi::update/$1');
 $routes->get('lokasi', 'Lokasi::index');
 
 // routes setup group
 $routes->get('/group/new', 'Group::new');
-$routes->get('/group/(:segment)/new', 'Group::edit/$1');
+// $routes->get('/group/(:segment)/new', 'Group::edit/$1');
 $routes->resource('group');
 $routes->post('/group', 'Group::create');
 $routes->post('/group/(:any)', 'Group::delete/$1');
 $routes->put('/group/(:segment)/edit', 'Group::edit/$1');
+$routes->put('/group/(:segment)', 'Group::update/$1');
 $routes->get('group', 'Group::index');
 
 // routes setup stock
 $routes->get('/stock/new', 'Stock::new');
-$routes->get('/stock/(:segment)/new', 'Stock::edit/$1');
+// $routes->get('/stock/(:segment)/new', 'Stock::edit/$1');
 $routes->resource('stock');
 $routes->post('/stock', 'Stock::create');
 $routes->post('/stock/(:any)', 'Stock::delete/$1');
 $routes->put('/stock/(:segment)/edit', 'Stock::edit/$1');
+$routes->put('/stock/(:segment)', 'Stock::update/$1');
 $routes->get('stock', 'Stock::index');
 
 // routes setup harga
 $routes->get('/harga/new', 'Harga::new');
-$routes->get('/harga/(:segment)/new', 'Harga::edit/$1');
+// $routes->get('/harga/(:segment)/new', 'Harga::edit/$1');
 $routes->resource('harga');
 $routes->post('/harga', 'Harga::create');
 $routes->post('/harga/(:any)', 'Harga::delete/$1');
 $routes->put('/harga/(:segment)/edit', 'Harga::edit/$1');
+$routes->put('/harga/(:segment)', 'Harga::update/$1');
 $routes->get('harga', 'Harga::index');
 
 //routes interface
@@ -102,11 +112,12 @@ $routes->get('setupbuku', 'Setupbuku::index');
 
 //routes setup biaya
 $routes->get('/setupbiaya/new', 'Setupbiaya::new');
-$routes->get('/setupbiaya/(:segment)/new', 'Setupbiaya::edit/$1');
+// $routes->get('/setupbiaya/(:segment)/new', 'Setupbiaya::edit/$1');
 $routes->resource('setupbiaya');
 $routes->post('/setupbiaya', 'Setupbiaya::create');
 $routes->post('/setupbiaya/(:any)', 'Setupbiaya::delete/$1');
 $routes->put('/setupbiaya/(:segment)/edit', 'Setupbiaya::edit/$1');
+$routes->put('/setupbiaya/(:segment)', 'Setupbiaya::update/$1');
 $routes->get('setupbiaya', 'Setupbiaya::index');
 
 //routes setup bank
@@ -120,56 +131,62 @@ $routes->get('setupbank', 'Setupbank::index');
 
 //routes salesman
 $routes->get('/setupsalesman/new', 'Setupsalesman::new');
-$routes->get('/setupsalesman/(:segment)/new', 'Setupsalesman::edit/$1');
+// $routes->get('/setupsalesman/(:segment)/new', 'Setupsalesman::edit/$1');
 $routes->resource('setupsalesman');
 $routes->post('/setupsalesman', 'Setupsalesman::create');
 $routes->post('/setupsalesman/(:any)', 'Setupsalesman::delete/$1');
-$routes->put('/setupsalesman/(:segment)/edit', 'Setupsalesman::edit/$1');
 $routes->get('setupsalesman', 'Setupsalesman::index');
+$routes->put('/setupsalesman/(:segment)/edit', 'Setupsalesman::edit/$1');
+$routes->put('/setupsalesman/(:segment)', 'Setupsalesman::update/$1');
 
 //routes setupsupplier
 $routes->get('/setupsupplier/new', 'SetupSupplier::new');
-$routes->get('/setupsupplier/(:segment)/new', 'SetupSupplier::edit/$1');
+// $routes->get('/setupsupplier/(:segment)/new', 'SetupSupplier::edit/$1');
 $routes->resource('setupsupplier');
 $routes->post('/setupsupplier', 'SetupSupplier::create');
 $routes->post('/setupsupplier/(:any)', 'SetupSupplier::delete/$1');
 $routes->put('/setupsupplier/(:segment)/edit', 'SetupSupplier::edit/$1');
+$routes->put('/setupsupplier/(:segment)', 'SetupSupplier::update/$1');
 $routes->get('setupsupplier', 'SetupSupplier::index');
 
 //routes Kelompokproduksi
 $routes->get('/kelompokproduksi/new', 'Kelompokproduksi::new');
-$routes->get('/kelompokproduksi/(:segment)/new', 'Kelompokproduksi::edit/$1');
+// $routes->get('/kelompokproduksi/(:segment)/new', 'Kelompokproduksi::edit/$1');
 $routes->resource('kelompokproduksi');
 $routes->post('/kelompokproduksi', 'Kelompokproduksi::create');
 $routes->post('/kelompokproduksi/(:any)', 'Kelompokproduksi::delete/$1');
 $routes->put('/kelompokproduksi/(:segment)/edit', 'Kelompokproduksi::edit/$1');
+$routes->put('/kelompokproduksi/(:segment)', 'Kelompokproduksi::update/$1');
 $routes->get('kelompokproduksi', 'Kelompokproduksi::index');
 
 //routes setupuser
 $routes->get('/setupuser/new', 'Setupuser::new');
-$routes->get('/setupuser/(:segment)/new', 'Setupuser::edit/$1');
+// $routes->get('/setupuser/(:segment)/new', 'Setupuser::edit/$1');
 $routes->resource('setupuser');
 $routes->post('/setupuser', 'Setupuser::create');
 $routes->post('/setupuser/(:any)', 'Setupuser::delete/$1');
 $routes->put('/setupuser/(:segment)/edit', 'Setupuser::edit/$1');
+$routes->put('/setupuser/(:segment)', 'Setupuser::update/$1');
 $routes->get('setupuser', 'Setupuser::index');
 
 //routes setuppelanggan
 $routes->get('/setuppelanggan/new', 'Setuppelanggan::new');
-$routes->get('/setuppelanggan/(:segment)/new', 'Setuppelanggan::edit/$1');
+// $routes->get('/setuppelanggan/(:segment)/new', 'Setuppelanggan::edit/$1');
 $routes->resource('setuppelanggan');
 $routes->post('/setuppelanggan', 'Setuppelanggan::create');
 $routes->post('/setuppelanggan/(:any)', 'Setuppelanggan::delete/$1');
 $routes->put('/setuppelanggan/(:segment)/edit', 'Setuppelanggan::edit/$1');
+$routes->put('/setuppelanggan/(:segment)', 'SetupPelanggan::update/$1');
 $routes->get('setuppelanggan', 'Setuppelanggan::index');
 
 //routes setuppiutang
 $routes->get('/setuppiutang/new', 'Setuppiutang::new');
-$routes->get('/setuppiutang/(:segment)/new', 'Setuppiutang::edit/$1');
+// $routes->get('/setuppiutang/(:segment)/new', 'Setuppiutang::edit/$1');
 $routes->resource('setuppiutang');
 $routes->post('/setuppiutang', 'Setuppiutang::create');
 $routes->post('/setuppiutang/(:any)', 'Setuppiutang::delete/$1');
 $routes->put('/setuppiutang/(:segment)/edit', 'Setuppiutang::edit/$1');
+$routes->put('/setuppiutang/(:segment)', 'SetupPiutang::update/$1');
 $routes->get('setuppiutang', 'Setuppiutang::index');
 
 //routes pindahlokasi
@@ -434,6 +451,120 @@ $routes->get('PenyesuaianStock/printPDF', 'PenyesuaianStock::printPDF');
 $routes->put('/penyesuaianstock/(:segment)', 'PenyesuaianStock::update/$1', ['filter' => 'role:admin']);
 $routes->put('/penyesuaianstock/(:segment)/edit', 'PenyesuaianStock::edit/$1', ['filter' => 'role:admin']);
 
+
+$routes->get('close-period', 'PeriodsController::index');
+$routes->get('period-add', 'PeriodsController::add');
+$routes->post('/close-period/close', 'PeriodsController::close');
+$routes->post('/close-period/open/(:num)', 'PeriodsController::open/$1', ['filter' => 'role:admin']);
+$routes->get('close-period/close_book/(:num)', 'PeriodsController::closeBook/$1');
+$routes->get('close-period/report/(:num)', 'PeriodsController::report/$1');
+$routes->get('close-period/print/(:num)', 'PeriodsController::printPDF/$1');
+$routes->delete('close-period/(:num)', 'PeriodsController::delete/$1');
+
+//routes untuk laporanpembelian
+$routes->get('/laporanpembelian', 'LaporanPembelian::index');
+$routes->get('/laporanpembelian/printPDF/(:num)', 'LaporanPembelian::printPDF/$1');
+$routes->get('/LaporanPembelian/printPDF/(:num)', 'LaporanPembelian::printPDF/$1');
+$routes->get('/laporanpembelian/printPDF', 'LaporanPembelian::printPDF');
+$routes->get('/LaporanPembelian/printPDF', 'LaporanPembelian::printPDF');
+$routes->post('/laporanpembelian', 'LaporanPembelian::index');
+
+//routes untuk laporanreturpembelian
+$routes->get('/laporanreturpembelian', 'LaporanReturPembelian::index');
+$routes->get('/laporanreturpembelian/printPDF/(:num)', 'LaporanReturPembelian::printPDF/$1');
+$routes->get('/LaporanReturPembelian/printPDF/(:num)', 'LaporanReturPembelian::printPDF/$1');
+$routes->get('/laporanreturpembelian/printPDF', 'LaporanReturPembelian::printPDF');
+$routes->get('/LaporanReturPembelian/printPDF', 'LaporanReturPembelian::printPDF');
+$routes->post('/laporanreturpembelian', 'LaporanReturPembelian::index');
+
+//laporanpenyesuaianstock
+$routes->get('/laporanpenyesuaianstock', 'LaporanPenyesuaianStock::index');
+$routes->get('/laporanpenyesuaianstock/printPDF/(:num)', 'LaporanPenyesuaianStock::printPDF/$1');
+$routes->get('/LaporanPenyesuaianStock/printPDF/(:num)', 'LaporanPenyesuaianStock::printPDF/$1');
+$routes->get('/laporanpenyesuaianstock/printPDF', 'LaporanPenyesuaianStock::printPDF');
+$routes->get('/LaporanPenyesuaianStock/printPDF', 'LaporanPenyesuaianStock::printPDF');
+$routes->post('/laporanpenyesuaianstock', 'LaporanPenyesuaianStock::index');
+
+//laporanpindahlokasi
+$routes->get('/laporanpindahlokasi', 'LaporanPindahLokasi::index');
+$routes->get('/laporanpindahlokasi/printPDF/(:num)', 'LaporanPindahLokasi::printPDF/$1');
+$routes->get('/LaporanPindahLokasi/printPDF/(:num)', 'LaporanPindahLokasi::printPDF/$1');
+$routes->get('/laporanpindahlokasi/printPDF', 'LaporanPindahLokasi::printPDF');
+$routes->get('/LaporanPindahLokasi/printPDF', 'LaporanPindahLokasi::printPDF');
+$routes->get('LaporanPindahLokasi/printPDF/(:any)/(:any)', 'LaporanPindahLokasi::printPDF/$1/$2');
+$routes->post('/laporanpindahlokasi', 'LaporanPindahLokasi::index');
+
+//laporanjurnalumum
+$routes->get('/laporanjurnalumum', 'LaporanJurnalUmum::index');
+$routes->get('/laporanjurnalumum/printPDF/(:num)', 'LaporanJurnalUmum::printPDF/$1');
+$routes->get('/LaporanJurnalUmum/printPDF/(:num)', 'LaporanJurnalUmum::printPDF/$1');
+$routes->get('/laporanjurnalumum/printPDF', 'LaporanJurnalUmum::printPDF');
+$routes->get('/LaporanJurnalUmum/printPDF', 'LaporanJurnalUmum::printPDF');
+$routes->post('/laporanjurnalumum', 'LaporanJurnalUmum::index');
+
+//laporanbahansablon
+$routes->get('/laporanbahansablon', 'LaporanBahanSablon::index');
+$routes->get('/laporanbahansablon/printPDF/(:num)', 'LaporanBahanSablon::printPDF/$1');
+$routes->get('/LaporanBahanSablon/printPDF/(:num)', 'LaporanBahanSablon::printPDF/$1');
+$routes->get('/laporanbahansablon/printPDF', 'LaporanBahanSablon::printPDF');
+$routes->get('/LaporanBahanSablon/printPDF', 'LaporanBahanSablon::printPDF');
+$routes->post('/laporanbahansablon', 'LaporanBahanSablon::index');
+
+//laporanhasilsablon
+$routes->get('/laporanhasilsablon', 'LaporanHasilSablon::index');    
+$routes->get('/laporanhasilsablon/printPDF/(:num)', 'LaporanHasilSablon::printPDF/$1');
+$routes->get('/LaporanHasilSablon/printPDF/(:num)', 'LaporanHasilSablon::printPDF/$1');
+$routes->get('/laporanhasilsablon/printPDF', 'LaporanHasilSablon::printPDF');
+$routes->get('/LaporanHasilSablon/printPDF', 'LaporanHasilSablon::printPDF');
+$routes->post('/laporanhasilsablon', 'LaporanHasilSablon::index');
+
+//laporanpemakaianbahan
+$routes->get('/laporanpemakaianbahan', 'LaporanPemakaianBahan::index');
+$routes->get('/laporanpemakaianbahan/printPDF/(:num)', 'LaporanPemakaianBahan::printPDF/$1');
+$routes->get('/LaporanPemakaianBahan/printPDF/(:num)', 'LaporanPemakaianBahan::printPDF/$1');
+$routes->get('/laporanpemakaianbahan/printPDF', 'LaporanPemakaianBahan::printPDF'); 
+$routes->get('/LaporanPemakaianBahan/printPDF', 'LaporanPemakaianBahan::printPDF');
+$routes->post('/laporanpemakaianbahan', 'LaporanPemakaianBahan::index');
+
+//laporanhasilproduksi
+$routes->get('/laporanhasilproduksi', 'LaporanHasilProduksi::index');
+$routes->get('/laporanhasilproduksi/printPDF/(:num)', 'LaporanHasilProduksi::printPDF/$1');
+$routes->get('/LaporanHasilProduksi/printPDF/(:num)', 'LaporanHasilProduksi::printPDF/$1');
+$routes->get('/laporanhasilproduksi/printPDF', 'LaporanHasilProduksi::printPDF');
+$routes->get('/LaporanHasilProduksi/printPDF', 'LaporanHasilProduksi::printPDF');
+$routes->post('/laporanhasilproduksi', 'LaporanHasilProduksi::index');
+
+//laporankaskecil
+$routes->get('/laporankaskecil', 'LaporanKasKecil::index');
+$routes->get('/laporankaskecil/printPDF/(:num)', 'LaporanKasKecil::printPDF/$1');
+$routes->get('/LaporanKasKecil/printPDF/(:num)', 'LaporanKasKecil::printPDF/$1');
+$routes->get('/laporankaskecil/printPDF', 'LaporanKasKecil::printPDF');
+$routes->get('/LaporanKasKecil/printPDF', 'LaporanKasKecil::printPDF');
+$routes->post('/laporankaskecil', 'LaporanKasKecil::index');
+
+//laporanpenjualan
+$routes->get('/laporanpenjualan', 'LaporanPenjualan::index');
+$routes->get('/laporanpenjualan/printPDF/(:num)', 'LaporanPenjualan::printPDF/$1');
+$routes->get('/LaporanPenjualan/printPDF/(:num)', 'LaporanPenjualan::printPDF/$1');
+$routes->get('/laporanpenjualan/printPDF', 'LaporanPenjualan::printPDF');
+$routes->get('/LaporanPenjualan/printPDF', 'LaporanPenjualan::printPDF');
+$routes->post('/laporanpenjualan', 'LaporanPenjualan::index');
+$routes->get('/LaporanPenjualan', 'LaporanPenjualan::index');
+$routes->get('/LaporanPenjualan/printPDF/(:num)', 'LaporanPenjualan::printPDF/$1');
+$routes->get('/LaporanPenjualan/printPDF', 'LaporanPenjualan::printPDF');
+$routes->post('/LaporanPenjualan', 'LaporanPenjualan::index');
+
+//laporanreturpenjualan
+$routes->get('/laporanreturpenjualan', 'LaporanReturPenjualan::index');
+$routes->get('/laporanreturpenjualan/printPDF/(:num)', 'LaporanReturPenjualan::printPDF/$1');
+$routes->get('/LaporanReturPenjualan/printPDF/(:num)', 'LaporanReturPenjualan::printPDF/$1');
+$routes->get('/laporanreturpenjualan/printPDF', 'LaporanReturPenjualan::printPDF');
+$routes->get('/LaporanReturPenjualan/printPDF', 'LaporanReturPenjualan::printPDF');
+$routes->post('/laporanreturpenjualan', 'LaporanReturPenjualan::index');
+$routes->get('/LaporanReturPenjualan', 'LaporanReturPenjualan::index');
+$routes->get('/LaporanReturPenjualan/printPDF/(:num)', 'LaporanReturPenjualan::printPDF/$1');
+$routes->get('/LaporanReturPenjualan/printPDF', 'LaporanReturPenjualan::printPDF');
+$routes->post('/LaporanReturPenjualan', 'LaporanReturPenjualan::index');
 
 
 

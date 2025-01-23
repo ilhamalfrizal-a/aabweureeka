@@ -115,4 +115,24 @@
   </div>
 </section>
 
+<script>
+    // Fungsi untuk menangkap tombol Enter
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ambil semua elemen input di dalam form
+        const inputs = document.querySelectorAll('input.form-control');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Mencegah submit form saat tekan Enter
+                    const nextInput = inputs[index + 1]; // Ambil input berikutnya
+                    if (nextInput) {
+                        nextInput.focus(); // Pindahkan fokus ke input berikutnya
+                    }
+                }
+            });
+        });
+    });
+</script>
+
 <?= $this->endSection(); ?>

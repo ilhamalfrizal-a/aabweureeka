@@ -27,6 +27,17 @@
                 <label>Nama</label>
                 <input type="text" class="form-control" name="nama_kelproduksi" placeholder="Nama" required>
             </div>
+
+            <div class="form-group">
+            <label>Rekening Bank</label>
+            <select class="form-control" name="id_interface" required>
+                <option value="" hidden>--Pilih Rekening--</option>
+                <?php foreach ($dtinterface as $interface) : ?>
+                <option value="<?= $interface->id_interface ?>"><?= $interface->rekening_biaya ?></option>
+                <?php endforeach; ?>
+            </select>
+            </div>
+            
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Simpan Data</button>
                 <button type="reset" class="btn btn-danger">Reset</button>

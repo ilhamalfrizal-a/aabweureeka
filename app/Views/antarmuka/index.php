@@ -29,13 +29,13 @@
   <!-- HALAMAN DINAMIS -->
   <div class="card">
                   <div class="card-header">
-                    <h4>Setup Harga</h4>
+                    <h4>Setup Interface</h4>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #6777ef; border-width: 4px; border-style: solid;">
+                      <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #009548; border-width: 4px; border-style: solid;">
                       <thead>
-                        <tr style="background-color: #6777ef; color: white;">
+                        <tr style="background-color: #009548; color: white;">
                           <th>No</th>
                           <th>Kas</th>
                           <th>Biaya</th>

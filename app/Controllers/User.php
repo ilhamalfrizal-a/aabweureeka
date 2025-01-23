@@ -22,6 +22,11 @@ class User extends BaseController
        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
 
+       // Contoh data, sesuaikan dengan data sebenarnya dari database
+        $data['password'] = "aabweureeka"; // Ganti dengan query untuk password
+        $data['kode_aktivasi'] = "eureeka123";     // Ganti dengan query untuk kode aktivasi
+
+
        $query = $this->builder->get();
        $data['users'] = $query->getResultObject();
        return view('user/index', $data);

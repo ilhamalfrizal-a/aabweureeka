@@ -54,6 +54,35 @@ class ModelKasKecil extends Model
         return $this->findAll();
     }
 
+    public function getByMonthAndYear($bulan, $tahun)
+    {
+        $builder = $this->db->table('kaskecil1 p');
+        $builder->select('
+            p.*, 
+            sp.kas_interface AS kas_interface, 
+            sb.nama_kelproduksi AS nama_kelproduksi
+        ');
+        $builder->join('interface1 sp', 'p.id_interface = sp.id_interface', 'left');
+        $builder->join('kelompokproduksi1 sb', 'p.id_kelproduksi = sb.id_kelproduksi', 'left');
+        $builder->where('MONTH(p.tanggal)', $bulan);
+        $builder->where('YEAR(p.tanggal)', $tahun);
+        $query = $builder->get();
+        $data = $query->getResult();
+
+
+        $grandtotal =  $this->selectSum('rp')
+        ->where('MONTH(tanggal)', $bulan)
+        ->where('YEAR(tanggal)', $tahun)
+        ->get()
+        ->getRow()
+        ->grand_total ?? 0;
+
+            return [
+                'data' => $data,           // Semua data
+                'grandtotal' => $grandtotal, // Total nilai grand_total
+            ];
+    }
+
     function getById($id)
     {
         // Memulai builder untuk tabel 'tutangusaha1' dengan alias 'p'
@@ -76,6 +105,43 @@ class ModelKasKecil extends Model
         
         // Mengembalikan satu baris sebagai objek
         return $query->getRow();
+    }
+
+    public function get_laporan($tglawal, $tglakhir, $rekeningkas, $kelproduksi = null)
+    {
+            $builder = $this->db->table('kaskecil1 p');
+
+            $builder->select('
+            p.*, 
+            sp.kas_interface AS kas_interface, 
+            sb.nama_kelproduksi AS nama_kelproduksi
+        ');
+        
+        // Melakukan JOIN dengan tabel 'setuppelanggan1' untuk mendapatkan nama pelanggan
+        $builder->join('interface1 sp', 'p.id_interface = sp.id_interface', 'left');
+        
+        // Melakukan JOIN dengan tabel 'setupbank1' untuk mendapatkan nama bank
+        $builder->join('kelompokproduksi1 sb', 'p.id_kelproduksi = sb.id_kelproduksi', 'left');
+
+
+        // Filter tanggal
+        if (!empty($tglawal)) {
+            $builder->where('p.tanggal >=', $tglawal);
+        }
+        if (!empty($tglakhir)) {
+            $builder->where('p.tanggal <=', $tglakhir);
+        }
+        // Filter supplier (jika ada)
+        if (!empty($rekeningkas)) {
+            $builder->where('p.id_interface', $rekeningkas);
+        }
+        // Filter Kelompok Produksi (jika ada)
+        if (!empty($kelproduksi)) {
+            $builder->where('p.id_kelproduksi', $kelproduksi);
+        }
+
+
+        return $builder->get()->getResult();
     }
 
     // // Validation

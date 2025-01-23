@@ -12,13 +12,19 @@ class ModelSetupbank extends Model
     protected $returnType       = 'object';
     // protected $useSoftDeletes   = false;
     // protected $protectFields    = true;
-    protected $allowedFields    = ['kode_setupbank', 'nama_setupbank', 'rekening_setupbank'];
+    protected $allowedFields    = ['kode_setupbank', 'nama_setupbank', 'id_interface'];
 
     public function getAll()
     {
         return $this->findAll(); // Mengambil semua data dari tabel lokasi1
     }
-
+    
+    public function getGroupWithInterface()
+    {
+        return $this->select('setupbank1.*, interface1.rekening_biaya')
+                    ->join('interface1', 'interface1.id_interface = setupbank1.id_interface', 'left')
+                    ->findAll();
+    }
     // protected bool $allowEmptyInserts = false;
     // protected bool $updateOnlyChanged = true;
 

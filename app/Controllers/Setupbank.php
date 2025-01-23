@@ -2,16 +2,19 @@
 
 namespace App\Controllers;
 
+use App\Models\ModelAntarmuka;
 use App\Models\ModelSetupbank;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
 class Setupbank extends ResourceController
 {
+    protected $objSetupbank, $db, $objAntarmuka;
     // INISIALISASI OBJECT DATA
     function __construct()
     {
         $this->objSetupbank = new ModelSetupbank();
+        $this->objAntarmuka = new ModelAntarmuka();
         $this->db = \Config\Database::connect();
     }
     
@@ -22,10 +25,17 @@ class Setupbank extends ResourceController
      */
     public function index()
     {
-        $builder = $this->db->table('setupbank1');
-        $query = $builder->get();
-        $data['dtsetupbank'] = $query->getResult();
-        return view('setupbank/index');
+        // Ambil data rekening dari tabel interface1
+        $ModelAntarmuka = new ModelAntarmuka();
+        $dtinterface = $ModelAntarmuka->findAll(); // Mengambil semua data rekening
+        
+        $data['dtinterface'] = $dtinterface;
+        $data['dtsetupbank'] = $this->objSetupbank->findAll();
+        $data['dtsetupbank'] = $this->objSetupbank->getGroupWithInterface();
+        $data['dtinterface'] = $this->db->table('interface1')->get()->getResult();
+
+    // Pastikan $data dikirim ke view
+    return view('setupbank/index', $data);
     }
 
     /**
@@ -62,7 +72,7 @@ class Setupbank extends ResourceController
             'id_setupbank' => $this->request->getVar('id_setupbank'),
             'kode_setupbank' => $this->request->getVar('kode_setupbank'),
             'nama_setupbank' => $this->request->getVar('nama_setupbank'),
-            'rekening_setupbank' => $this->request->getVar('rekening_setupbank'),
+            'id_interface' => $this->request->getVar('id_interface'),
         ];
         $this->db->table('setupbank1')->insert($data);
 

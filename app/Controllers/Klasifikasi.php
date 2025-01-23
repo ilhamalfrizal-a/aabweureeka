@@ -4,28 +4,29 @@ namespace App\Controllers;
 
 use CodeIgniter\CodeIgniter;
 use CodeIgniter\Database\Query;
+use App\Models\ModelKlasifikasi;
 
 class Klasifikasi extends BaseController
 {
+    protected $objKlasifikasi;  
+    protected $db;
+    function __construct()
+    {
+        $this->objKlasifikasi = new ModelKlasifikasi();
+        $this->db = \Config\Database::connect();
+    }
     public function index()
     {
               
-        $builder = $this->db->table('klasifikasi1');
-        $query = $builder->get();
-        
-        $query = $this->db->query("SELECT * FROM klasifikasi1");
-        $data['dtklasifikasi'] = $query->getResult();
+        $data ['dtklasifikasi'] = $this->objKlasifikasi->findAll();
         return view('klasifikasi/index', $data);
 
-        // dd($query->getResult());
-
-        // dd($query);
-        return view('klasifikasi/index');
     }
     
     public function new()
     {
-        return view('klasifikasi/new');
+        $data ['dtklasifikasi'] = $this->objKlasifikasi->findAll();
+        return view('klasifikasi/new', $data);
     }
     public function store()
     {

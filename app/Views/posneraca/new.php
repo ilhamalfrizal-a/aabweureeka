@@ -27,9 +27,29 @@
                 <label>Nama</label>
                 <input type="text" class="form-control" name="nama_posneraca" placeholder="Nama" required>
             </div>
+
             <div class="form-group">
-                <label>Posisi</label>
-                <input type="text" class="form-control" name="posisi_posneraca" placeholder="Posisi" required>
+            <label>Klasifikasi</label>
+            <select class="form-control" name="id_klasifikasi" required>
+              <option value="" hidden>-- Pilih Klasifikasi --</option>
+              <?php foreach ($dtklasifikasi as $key => $value) : ?>
+                <option value="<?= esc($value->id_klasifikasi) ?>" <?= old('id_klasifikasi') == $value->id_klasifikasi ? 'selected' : '' ?>>
+                  <?= esc($value->nama_klasifikasi) ?>
+                </option>
+              <?php endforeach; ?>    
+            </select>    
+          </div>
+
+            <div class="form-group">
+                <label>Posisi</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="debet" name="posisi_posneraca[]" value="debet">
+                    <label class="form-check-label" for="debet">Debet</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="kredit" name="posisi_posneraca[]" value="kredit">
+                    <label class="form-check-label" for="kredit">Kredit</label>
+                </div>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Simpan Data</button>

@@ -8,6 +8,8 @@ use CodeIgniter\RESTful\ResourceController;
 
 class SetupUser extends ResourceController
 {
+    protected $objSetupuser;
+    protected $db;
     function __construct()
     {
         $this->objSetupuser = new ModelSetupuser();
@@ -56,6 +58,14 @@ class SetupUser extends ResourceController
      */
     public function create()
     {
+        $password = $this->request->getVar('password');
+        $kode_aktivasi = $this->request->getVar('kode_aktivasi');
+    
+        // Validasi password dan kode aktivasi
+        if ($password !== 'aabweureeka' || $kode_aktivasi !== 'eureeka123') {
+            return redirect()->back()->with('error', 'Password atau kode aktivasi salah.');
+        }
+        
         $data = $this->request->getPost();
         $data = [
             'id_setupuser' => $this->request->getVar('id_setupuser'),
@@ -77,7 +87,19 @@ class SetupUser extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+        // Ambil data berdasarkan ID
+       $dtsetupuser = $this->objSetupuser->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtsetupuser) {
+           return redirect()->to(site_url('setupuser'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtsetupuser'] = $dtsetupuser;
+       
+       return view('setupuser/edit', $data);
     }
 
     /**
@@ -89,7 +111,25 @@ class SetupUser extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $password = $this->request->getVar('password');
+        $kode_aktivasi = $this->request->getVar('kode_aktivasi');
+    
+        // Validasi password dan kode aktivasi
+        if ($password !== 'aabweureeka' || $kode_aktivasi !== 'eureeka123') {
+            return redirect()->back()->with('error', 'Password atau kode aktivasi salah.');
+        }
+
+        $data = $this->request->getPost();
+        $data = [
+           'id_setupuser' => $this->request->getVar('id_setupuser'),
+            'kode_setupuser' => $this->request->getVar('kode_setupuser'),
+            'nama_setupuser' => $this->request->getVar('nama_setupuser'),
+            'check_setupuser' => $this->request->getVar('check_setupuser'),
+        ];
+        // Update data berdasarkan ID
+        $this->objSetupuser->update($id, $data);
+
+        return redirect()->to(site_url('setupuser'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

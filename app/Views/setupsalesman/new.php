@@ -21,8 +21,9 @@
 
             <div class="form-group">
                 <label>Kode</label>
-                <input type="text" class="form-control" name="kode_setupsalesman" placeholder="Kode" required>
+                <input type="text" class="form-control" name="kode_setupsalesman" placeholder="Kode" value="<?= old('kode_setupsalesman') ?>" readonly>
             </div>
+
             <div class="form-group">
                 <label>Nama</label>
                 <input type="text" class="form-control" name="nama_setupsalesman" placeholder="Nama" required>
@@ -51,5 +52,6 @@
 
   </div>
 </section>
+
 
 <?= $this->endSection(); ?>

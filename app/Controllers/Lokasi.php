@@ -8,6 +8,8 @@ use CodeIgniter\RESTful\ResourceController;
 
 class Lokasi extends ResourceController
 {
+    protected $objLokasi;
+    protected $db;
     // INISIALISASI OBJECT DATA
     function __construct()
     {
@@ -78,7 +80,19 @@ class Lokasi extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+        // Ambil data berdasarkan ID
+       $dtlokasi = $this->objLokasi->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtlokasi) {
+           return redirect()->to(site_url('lokasi'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtlokasi'] = $dtlokasi;
+       
+       return view('lokasi/edit', $data);
     }
 
     /**
@@ -90,7 +104,16 @@ class Lokasi extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $data = [
+            'id_lokasi' => $this->request->getVar('id_lokasi'),
+            'kode_lokasi' => $this->request->getVar('kode_lokasi'),
+            'nama_lokasi' => $this->request->getVar('nama_lokasi'),
+        ];
+        // Update data berdasarkan ID
+        $this->objLokasi->update($id, $data);
+
+        return redirect()->to(site_url('lokasi'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

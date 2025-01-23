@@ -33,11 +33,16 @@
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                    <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #6777ef; border-width: 4px; border-style: solid;">
+                    <table border="2px" class="tablet able-striped table-md" id="myTable" style="border-color: #009548; border-width: 4px; border-style: solid;">
                       <thead>
-                      <tr style="background-color: #6777ef; color: white;">
+                      <tr style="background-color: #009548; color: white;">
                           <th>#</th>
                           <th>Nama Lokasi</th>
+                          <th>Kode</th>
+                          <th>Nama Barang</th>
+                          <th>Group</th>
+                          <th>Kelompok</th>
+                          <th>Supplier</th>
                           <th>Jumlah</th>
                           <th>Satuan</th>
                           <th>Jml Harga</th>
@@ -51,6 +56,11 @@
                         <tr>
                           <td><?= $key+1 ?></td>
                           <td><?= $value->nama_lokasi ?></td>
+                          <td><?= $value->kode ?></td>
+                          <td><?= $value->nama_barang ?></td>
+                          <td><?= $value->nama_group ?></td>
+                          <td><?= $value->nama_kelompok ?></td>
+                          <td><?= $value->nama_setupsupplier ?></td>
                           <td><?= $value->satuan_stock ?></td>
                           <td><?= $value->satuan ?></td>
                           <td><?= $value->jml_harga ?></td>
@@ -59,7 +69,8 @@
 
                           <td class="text-center">
                             <!-- Tombol Edit Data -->
-                            <!-- <a href="<?= site_url('stock/edit/' . $value->id_stock) ?>" class="btn btn-warning"><i class="fas fa-pencil-alt btn-small"></i> Edit</a> -->
+                            <a href="<?= site_url('stock/' . $value->id_stock) .  '/edit' ?>" class="btn btn-warning"><i class="fas fa-pencil-alt btn-small"></i> Edit</a>
+                            <input type="hidden" name="_method" value="PUT">
                             <!-- Tombol Hapus Data -->
                             <form action="<?= site_url('stock/'.$value->id_stock) ?>" method="post" id="del-<?=$value->id_stock?>" class="d-inline">
                               <?= csrf_field() ?>

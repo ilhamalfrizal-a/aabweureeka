@@ -21,8 +21,9 @@
 
             <div class="form-group">
                 <label>Kode</label>
-                <input type="text" class="form-control" name="kode_pelanggan" placeholder="Kode" required>
+                <input type="text" class="form-control" name="kode_pelanggan" placeholder="Kode" readonly>
             </div>
+
             <div class="form-group">
                 <label>Nama</label>
                 <input type="text" class="form-control" name="nama_pelanggan" placeholder="Nama" required>

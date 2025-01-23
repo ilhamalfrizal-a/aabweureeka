@@ -8,6 +8,8 @@ use CodeIgniter\RESTful\ResourceController;
 
 class SetupSupplier extends ResourceController
 {
+    protected $objSetupsupplier;
+    protected $db;
     function __construct()
     {
         $this->objSetupsupplier = new ModelSetupsupplier();
@@ -83,7 +85,19 @@ class SetupSupplier extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+        // Ambil data berdasarkan ID
+       $dtsetupsupplier = $this->objSetupsupplier->find($id);
+
+       // Cek jika data tidak ditemukan
+       if (!$dtsetupsupplier) {
+           return redirect()->to(site_url('setupsupplier'))->with('error', 'Data tidak ditemukan');
+       }
+
+
+       // Lanjutkan jika semua pengecekan berhasil
+       $data['dtsetupsupplier'] = $dtsetupsupplier;
+       
+       return view('setupsupplier/edit', $data);
     }
 
     /**
@@ -95,7 +109,23 @@ class SetupSupplier extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $data = [
+            'id_setupsupplier' => $this->request->getVar('id_setupsupplier'),
+            'kode' => $this->request->getVar('kode'),
+            'nama' => $this->request->getVar('nama'),
+            'alamat' => $this->request->getVar('alamat'),
+            'telepon' => $this->request->getVar('telepon'),
+            'contact_person' => $this->request->getVar('contact_person'),
+            'npwp' => $this->request->getVar('npwp'),
+            'tanggal' => $this->request->getVar('tanggal'),
+            'saldo' => $this->request->getVar('saldo'),
+            'tipe' => $this->request->getVar('tipe'),
+        ];
+        // Update data berdasarkan ID
+        $this->objSetupsupplier->update($id, $data);
+
+        return redirect()->to(site_url('setupsupplier'))->with('Sukses', 'Data Berhasil Disimpan');
     }
 
     /**

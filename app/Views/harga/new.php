@@ -1,4 +1,4 @@
-<?= $this->extend("layout/backend") ?>;
+<?= $this->extend("layout/backend") ?>
 
 <?= $this->section("content") ?>
 
@@ -15,9 +15,8 @@
                     <h4>Setup Harga</h4>
     </div>
         <div class="card-body">
-            <form method="post" action="<?=site_url('harga') ?> ">
+            <form method="post" action="<?=site_url('harga') ?>">
             <?= csrf_field() ?>
-
 
             <div class="form-group">
                 <label>Kode</label>
@@ -29,15 +28,15 @@
             </div>
             <div class="form-group">
                 <label>Harga Jual (EXC)</label>
-                <input type="text" class="form-control" name="harga_jualexc" placeholder="Harga Jual (EXC)" required>
+                <input type="text" class="form-control" name="harga_jualexc" placeholder="Harga Jual (EXC)" oninput="formatHarga(this)" required>
             </div>
             <div class="form-group">
                 <label>Harga Jual (INC)</label>
-                <input type="text" class="form-control" name="harga_jualinc" placeholder="Harga Jual (INC)" required>
+                <input type="text" class="form-control" name="harga_jualinc" placeholder="Harga Jual (INC)" oninput="formatHarga(this)" required>
             </div>
             <div class="form-group">
                 <label>Harga Beli</label>
-                <input type="text" class="form-control" name="harga_beli" placeholder="Harga Beli" required>
+                <input type="text" class="form-control" name="harga_beli" placeholder="Harga Beli" oninput="formatHarga(this)" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Simpan Data</button>
@@ -50,5 +49,21 @@
 
   </div>
 </section>
+
+<script>
+// Fungsi untuk memformat angka ke dalam format Rupiah
+function formatHarga(input) {
+    let value = input.value.replace(/\./g, '').replace(',', '.');
+    let formattedValue = formatRupiah(value);
+    input.value = formattedValue;
+}
+
+// Fungsi untuk format angka menjadi Rupiah
+function formatRupiah(angka) {
+    let numberString = angka.replace(/\D/g, ''); // Hapus semua karakter yang bukan angka
+    let formattedNumber = numberString.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Format menjadi ribuan
+    return formattedNumber ? 'Rp ' + formattedNumber : ''; // Tambahkan simbol "Rp"
+}
+</script>
 
 <?= $this->endSection(); ?>
