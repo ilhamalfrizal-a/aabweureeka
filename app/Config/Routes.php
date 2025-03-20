@@ -6,109 +6,64 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
-$routes->get('/klasifikasi', 'Klasifikasi::index');
-$routes->get('klasifikasi/new', 'Klasifikasi::new');
-$routes->post('/klasifikasi', 'Klasifikasi::store');
-$routes->post('klasifikasi', 'Klasifikasi::create');
-$routes->get('klasifikasi/edit/(:num)', 'Klasifikasi::edit/$1');
-$routes->put('/klasifikasi/edit/(:any)', 'Klasifikasi::update/$1');
-$routes->delete('/klasifikasi/(:any)', 'Klasifikasi::destroy/$1');
 
-// routes pos neraca
-$routes->get('/posneraca/new', 'Posneraca::new');
-// $routes->get('/posneraca/(:segment)/new', 'Posneraca::edit/$1');
-$routes->resource('posneraca');
-$routes->post('/posneraca', 'Posneraca::create');
-$routes->post('/posneraca/(:any)', 'Posneraca::delete/$1');
-$routes->put('/posneraca/(:segment)/edit', 'Posneraca::edit/$1');
-$routes->put('/posneraca/(:segment)', 'Posneraca::update/$1');
+$routes->group('setup', ['namespace' => 'App\Controllers\setup'], static function ($routes) {
+    //routes periode
+    $routes->resource('periode', ['controller' => 'Periode']);
 
-// routes setup satuan
-$routes->get('/satuan/new', 'Satuan::new');
-// $routes->get('/satuan/(:segment)/new', 'Satuan::edit/$1');
-$routes->resource('satuan');
-$routes->post('/satuan', 'Satuan::create');
-$routes->post('/satuan/(:any)', 'Satuan::delete/$1');
-$routes->put('/satuan/(:segment)/edit', 'Satuan::edit/$1');
-$routes->put('/satuan/(:segment)', 'Satuan::update/$1');
-$routes->get('satuan', 'Satuan::index');
+    //routes interface
+    $routes->resource('antarmuka', ['controller' => 'Antarmuka']);
+    // $routes->get('antarmuka/new', 'Antarmuka::new');
+    // $routes->get('antarmuka/(:segment)/new', 'Antarmuka::edit/$1');
+    // $routes->post('antarmuka', 'Antarmuka::create');
+    // $routes->post('antarmuka/(:any)', 'Antarmuka::delete/$1');
+    // $routes->put('antarmuka/(:segment)/edit', 'Antarmuka::edit/$1');
+    // $routes->get('antarmuka', 'Antarmuka::index');
 
-// routes setup kelompok
-$routes->get('/kelompok/new', 'Kelompok::new');
-// $routes->get('/kelompok/(:segment)/new', 'Kelompok::edit/$1');
-$routes->resource('kelompok');
-$routes->post('/kelompok', 'Kelompok::create');
-$routes->post('/kelompok/(:any)', 'Kelompok::delete/$1');
-$routes->put('/kelompok/(:segment)/edit', 'Kelompok::edit/$1'); 
-$routes->put('/kelompok/(:segment)', 'Kelompok::update/$1');
-$routes->get('kelompok', 'Kelompok::index');
+    //routes klasifikasi
+    $routes->resource('klasifikasi', ['controller' => 'Klasifikasi']);
 
-// routes setup lokasi
-$routes->get('/lokasi/new', 'Lokasi::new');
-// $routes->get('/lokasi/(:segment)/new', 'Lokasi::edit/$1');
-$routes->resource('lokasi');
-$routes->post('/lokasi', 'Lokasi::create');
-$routes->post('/lokasi/(:any)', 'Lokasi::delete/$1');
-$routes->put('/lokasi/(:segment)/edit', 'Lokasi::edit/$1');
-$routes->put('/lokasi/(:segment)', 'Lokasi::update/$1');
-$routes->get('lokasi', 'Lokasi::index');
+    // routes pos neraca
+    $routes->resource('posneraca', ['controller' => 'Posneraca']);
 
-// routes setup group
-$routes->get('/group/new', 'Group::new');
-// $routes->get('/group/(:segment)/new', 'Group::edit/$1');
-$routes->resource('group');
-$routes->post('/group', 'Group::create');
-$routes->post('/group/(:any)', 'Group::delete/$1');
-$routes->put('/group/(:segment)/edit', 'Group::edit/$1');
-$routes->put('/group/(:segment)', 'Group::update/$1');
-$routes->get('group', 'Group::index');
+    //routes setup buku besar
+    $routes->resource('buku', ['controller' => 'SetupBuku']);
 
-// routes setup stock
-$routes->get('/stock/new', 'Stock::new');
-// $routes->get('/stock/(:segment)/new', 'Stock::edit/$1');
-$routes->resource('stock');
-$routes->post('/stock', 'Stock::create');
-$routes->post('/stock/(:any)', 'Stock::delete/$1');
-$routes->put('/stock/(:segment)/edit', 'Stock::edit/$1');
-$routes->put('/stock/(:segment)', 'Stock::update/$1');
-$routes->get('stock', 'Stock::index');
+    //routes salesman
+    $routes->resource('salesman', ['controller' => 'SetupSalesman']);
 
-// routes setup harga
-$routes->get('/harga/new', 'Harga::new');
-// $routes->get('/harga/(:segment)/new', 'Harga::edit/$1');
-$routes->resource('harga');
-$routes->post('/harga', 'Harga::create');
-$routes->post('/harga/(:any)', 'Harga::delete/$1');
-$routes->put('/harga/(:segment)/edit', 'Harga::edit/$1');
-$routes->put('/harga/(:segment)', 'Harga::update/$1');
-$routes->get('harga', 'Harga::index');
+    //routes setuppelanggan
+    $routes->resource('pelanggan', ['controller' => 'SetupPelanggan']);
+});
 
-//routes interface
-$routes->get('/antarmuka/new', 'Antarmuka::new');
-$routes->get('/antarmuka/(:segment)/new', 'Antarmuka::edit/$1');
-$routes->resource('antarmuka');
-$routes->post('/antarmuka', 'Antarmuka::create');
-$routes->post('/antarmuka/(:any)', 'Antarmuka::delete/$1');
-$routes->put('/antarmuka/(:segment)/edit', 'Antarmuka::edit/$1');
-$routes->get('antarmuka', 'Antarmuka::index');
+$routes->group('setup_persediaan', ['namespace' => 'App\Controllers\setup_persediaan'], static function ($routes) {
 
-//routes periode
-$routes->get('/periode/new', 'Periode::new');
-$routes->get('/periode/(:segment)/new', 'Periode::edit/$1');
-$routes->resource('periode');
-$routes->post('/periode', 'Periode::create');
-$routes->post('/periode/(:any)', 'Periode::delete/$1');
-$routes->put('/periode/(:segment)/edit', 'Periode::edit/$1');
-$routes->get('periode', 'Periode::index');
+    //routes setup lokasi
+    $routes->resource('satuan');
 
-//routes setup buku besar
-$routes->get('/setupbuku/new', 'Setupbuku::new');
-$routes->get('/setupbuku/(:segment)/new', 'Setupbuku::edit/$1');
-$routes->resource('setupbuku');
-$routes->post('/setupbuku', 'Setupbuku::create');
-$routes->post('/setupbuku/(:any)', 'Setupbuku::delete/$1');
-$routes->put('/setupbuku/(:segment)/edit', 'Setupbuku::edit/$1');
-$routes->get('setupbuku', 'Setupbuku::index');
+    // routes setup lokasi
+    $routes->resource('lokasi');
+
+    // routes setup group
+    $routes->resource('group');
+
+    // routes setup kelompok
+    $routes->resource('kelompok');
+
+    //routes setup stock
+    $routes->resource('stock');
+
+    // routes setup harga
+    // $routes->get('/harga/new', 'Harga::new');
+    // $routes->get('/harga/(:segment)/new', 'Harga::edit/$1');
+    $routes->resource('harga');
+    // $routes->post('/harga', 'Harga::create');
+    // $routes->post('/harga/(:any)', 'Harga::delete/$1');
+    // $routes->put('/harga/(:segment)/edit', 'Harga::edit/$1');
+    // $routes->put('/harga/(:segment)', 'Harga::update/$1');
+    // $routes->get('harga', 'Harga::index');
+});
+
 
 //routes setup biaya
 $routes->get('/setupbiaya/new', 'Setupbiaya::new');
@@ -129,15 +84,7 @@ $routes->post('/setupbank/(:any)', 'Setupbank::delete/$1');
 $routes->put('/setupbank/(:segment)/edit', 'Setupbank::edit/$1');
 $routes->get('setupbank', 'Setupbank::index');
 
-//routes salesman
-$routes->get('/setupsalesman/new', 'Setupsalesman::new');
-// $routes->get('/setupsalesman/(:segment)/new', 'Setupsalesman::edit/$1');
-$routes->resource('setupsalesman');
-$routes->post('/setupsalesman', 'Setupsalesman::create');
-$routes->post('/setupsalesman/(:any)', 'Setupsalesman::delete/$1');
-$routes->get('setupsalesman', 'Setupsalesman::index');
-$routes->put('/setupsalesman/(:segment)/edit', 'Setupsalesman::edit/$1');
-$routes->put('/setupsalesman/(:segment)', 'Setupsalesman::update/$1');
+
 
 //routes setupsupplier
 $routes->get('/setupsupplier/new', 'SetupSupplier::new');
@@ -168,16 +115,6 @@ $routes->post('/setupuser/(:any)', 'Setupuser::delete/$1');
 $routes->put('/setupuser/(:segment)/edit', 'Setupuser::edit/$1');
 $routes->put('/setupuser/(:segment)', 'Setupuser::update/$1');
 $routes->get('setupuser', 'Setupuser::index');
-
-//routes setuppelanggan
-$routes->get('/setuppelanggan/new', 'Setuppelanggan::new');
-// $routes->get('/setuppelanggan/(:segment)/new', 'Setuppelanggan::edit/$1');
-$routes->resource('setuppelanggan');
-$routes->post('/setuppelanggan', 'Setuppelanggan::create');
-$routes->post('/setuppelanggan/(:any)', 'Setuppelanggan::delete/$1');
-$routes->put('/setuppelanggan/(:segment)/edit', 'Setuppelanggan::edit/$1');
-$routes->put('/setuppelanggan/(:segment)', 'SetupPelanggan::update/$1');
-$routes->get('setuppelanggan', 'Setuppelanggan::index');
 
 //routes setuppiutang
 $routes->get('/setuppiutang/new', 'Setuppiutang::new');
@@ -245,7 +182,7 @@ $routes->get('hasilproduksi/printPDF', 'HasilProduksi::printPDF');
 $routes->get('HasilProduksi/printPDF', 'HasilProduksi::printPDF');
 
 //routes pemakaianbahan
-$routes->get('/pemakaianbahan/new', 'PemakaianBahan::new'); 
+$routes->get('/pemakaianbahan/new', 'PemakaianBahan::new');
 // $routes->get('/pemakaianbahan/(:segment)/new', 'PemakaianBahan::edit/$1');
 $routes->resource('pemakaianbahan');
 $routes->post('/pemakaianbahan', 'PemakaianBahan::create');
@@ -275,7 +212,7 @@ $routes->put('/tutangusaha/(:segment)', 'TutangUsaha::update/$1', ['filter' => '
 $routes->put('/tutangusaha/(:segment)/edit', 'TutangUsaha::edit/$1', ['filter' => 'role:admin']);
 
 //routes lunassalesman
-$routes->get('/lunassalesman/new', 'LunasSalesman::new');   
+$routes->get('/lunassalesman/new', 'LunasSalesman::new');
 // $routes->get('/lunassalesman/(:segment)/new', 'LunasSalesman::edit/$1');    
 $routes->resource('lunassalesman');
 $routes->post('/lunassalesman', 'LunasSalesman::create');
@@ -347,7 +284,7 @@ $routes->get('KasKecil/printPDF/(:num)', 'KasKecil::printPDF/$1');
 $routes->get('kaskecil/printPDF', 'KasKecil::printPDF');
 $routes->get('KasKecil/printPDF', 'KasKecil::printPDF');
 $routes->put('/kaskecil/(:segment)', 'KasKecil::update/$1', ['filter' => 'role:admin']);
-$routes->put('/kaskecil/(:segment)/edit', 'KasKecil::edit/$1', ['filter' => 'role:admin']);    
+$routes->put('/kaskecil/(:segment)/edit', 'KasKecil::edit/$1', ['filter' => 'role:admin']);
 
 //routes stockopname
 $routes->get('/stockopname/new', 'StockOpname::new');
@@ -362,7 +299,7 @@ $routes->get('StockOpname/printPDF/(:num)', 'StockOpname::printPDF/$1');
 $routes->get('stockopname/printPDF', 'StockOpname::printPDF');
 $routes->get('StockOpname/printPDF', 'StockOpname::printPDF');
 $routes->put('/stockopname/(:segment)', 'StockOpname::update/$1', ['filter' => 'role:admin']);
-$routes->put('/stokopname/(:segment)/edit', 'StockOpname::edit/$1', ['filter' => 'role:admin']);  
+$routes->put('/stokopname/(:segment)/edit', 'StockOpname::edit/$1', ['filter' => 'role:admin']);
 
 //routes posting dan tutup buku
 $routes->get('/transaksi/posting', 'TransaksiController::posting');
@@ -379,7 +316,7 @@ $routes->post('/user/update/(:num)', 'User::update/$1'); // Hanya menggunakan PO
 
 //routes untuk tutupbuku
 $routes->get('closebook', 'TutupBukuController::index');
-    
+
 // Route untuk menampilkan halaman closeBook
 $routes->get('accounting/closeBook', 'Accounting::index');
 
@@ -387,7 +324,7 @@ $routes->get('accounting/closeBook', 'Accounting::index');
 $routes->post('accounting/closeBook/closePeriod', 'Accounting::closePeriod');
 
 //routes untuk pembelian
-$routes->get('/pembelian/new', 'Pembelian::new'); 
+$routes->get('/pembelian/new', 'Pembelian::new');
 $routes->resource('pembelian');
 $routes->post('/pembelian', 'Pembelian::create');
 $routes->post('/pembelian/(:any)', 'Pembelian::delete/$1');
@@ -400,7 +337,7 @@ $routes->put('/pembelian/(:segment)', 'Pembelian::update/$1', ['filter' => 'role
 $routes->put('/pembelian/(:segment)/edit', 'Pembelian::edit/$1', ['filter' => 'role:admin']);
 
 //routes untuk returpembelian
-$routes->get('/returpembelian/new', 'ReturPembelian::new'); 
+$routes->get('/returpembelian/new', 'ReturPembelian::new');
 $routes->resource('returpembelian');
 $routes->post('/returpembelian', 'ReturPembelian::create');
 $routes->post('/returpembelian/(:any)', 'ReturPembelian::delete/$1');
@@ -413,7 +350,7 @@ $routes->put('/returpembelian/(:segment)', 'ReturPembelian::update/$1', ['filter
 $routes->put('/returpembelian/(:segment)/edit', 'ReturPembelian::edit/$1', ['filter' => 'role:admin']);
 
 //routes untuk penjualan
-$routes->get('/penjualan/new', 'Penjualan::new'); 
+$routes->get('/penjualan/new', 'Penjualan::new');
 $routes->resource('penjualan');
 $routes->post('/penjualan', 'Penjualan::create');
 $routes->post('/penjualan/(:any)', 'Penjualan::delete/$1');
@@ -425,8 +362,9 @@ $routes->get('Penjualan/printPDF', 'Penjualan::printPDF');
 $routes->put('/penjualan/(:segment)', 'Penjualan::update/$1', ['filter' => 'role:admin']);
 $routes->put('/penjualan/(:segment)/edit', 'Penjualan::edit/$1', ['filter' => 'role:admin']);
 
+
 //routes untuk returpenjualan
-$routes->get('/returpenjualan/new', 'ReturPenjualan::new'); 
+$routes->get('/returpenjualan/new', 'ReturPenjualan::new');
 $routes->resource('returpenjualan');
 $routes->post('/returpenjualan', 'ReturPenjualan::create');
 $routes->post('/returpenjualan/(:any)', 'ReturPenjualan::delete/$1');
@@ -439,7 +377,7 @@ $routes->put('/returpenjualan/(:segment)', 'ReturPenjualan::update/$1', ['filter
 $routes->put('/returpenjualan/(:segment)/edit', 'ReturPenjualan::edit/$1', ['filter' => 'role:admin']);
 
 //routes untuk penyesuaianstock
-$routes->get('/penyesuaianstock/new', 'PenyesuaianStock::new'); 
+$routes->get('/penyesuaianstock/new', 'PenyesuaianStock::new');
 $routes->resource('penyesuaianstock');
 $routes->post('/penyesuaianstock', 'PenyesuaianStock::create');
 $routes->post('/penyesuaianstock/(:any)', 'PenyesuaianStock::delete/$1');
@@ -511,7 +449,7 @@ $routes->get('/LaporanBahanSablon/printPDF', 'LaporanBahanSablon::printPDF');
 $routes->post('/laporanbahansablon', 'LaporanBahanSablon::index');
 
 //laporanhasilsablon
-$routes->get('/laporanhasilsablon', 'LaporanHasilSablon::index');    
+$routes->get('/laporanhasilsablon', 'LaporanHasilSablon::index');
 $routes->get('/laporanhasilsablon/printPDF/(:num)', 'LaporanHasilSablon::printPDF/$1');
 $routes->get('/LaporanHasilSablon/printPDF/(:num)', 'LaporanHasilSablon::printPDF/$1');
 $routes->get('/laporanhasilsablon/printPDF', 'LaporanHasilSablon::printPDF');
@@ -522,7 +460,7 @@ $routes->post('/laporanhasilsablon', 'LaporanHasilSablon::index');
 $routes->get('/laporanpemakaianbahan', 'LaporanPemakaianBahan::index');
 $routes->get('/laporanpemakaianbahan/printPDF/(:num)', 'LaporanPemakaianBahan::printPDF/$1');
 $routes->get('/LaporanPemakaianBahan/printPDF/(:num)', 'LaporanPemakaianBahan::printPDF/$1');
-$routes->get('/laporanpemakaianbahan/printPDF', 'LaporanPemakaianBahan::printPDF'); 
+$routes->get('/laporanpemakaianbahan/printPDF', 'LaporanPemakaianBahan::printPDF');
 $routes->get('/LaporanPemakaianBahan/printPDF', 'LaporanPemakaianBahan::printPDF');
 $routes->post('/laporanpemakaianbahan', 'LaporanPemakaianBahan::index');
 
@@ -553,6 +491,10 @@ $routes->get('/LaporanPenjualan', 'LaporanPenjualan::index');
 $routes->get('/LaporanPenjualan/printPDF/(:num)', 'LaporanPenjualan::printPDF/$1');
 $routes->get('/LaporanPenjualan/printPDF', 'LaporanPenjualan::printPDF');
 $routes->post('/LaporanPenjualan', 'LaporanPenjualan::index');
+
+
+//routes untuk penjualan per salesman per pelanggan per barang
+$routes->get('laporanPenjualanP', 'LaporanPenjualanP::index');
 
 //laporanreturpenjualan
 $routes->get('/laporanreturpenjualan', 'LaporanReturPenjualan::index');

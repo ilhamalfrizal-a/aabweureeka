@@ -8,20 +8,25 @@
 "use strict";
 
 function hapus(id) {
-    $('#del-'+id).submit();
+    $('#del-' + id).submit();
 }
 
 // Menu Dinamis
-var path = location.pathname.split('/')
-var url = location.origin + '/' + path[1]
-$('ul.sidebar-menu li a').each(function() {
-    if ($(this).attr('href').indexOf(url) !==-1) {
-        $(this).parent().addClass('active').parent().parent('li').addClass('active')
-        
+var path = location.pathname.split('/');
+var currentPage = path[path.length - 1] || '/';
+
+$('ul.sidebar-menu li a').each(function () {
+    var href = $(this).attr('href');
+    var hrefSplit = href.split('/');
+    var hrefPage = hrefSplit[hrefSplit.length - 1] || '/';
+
+    if (currentPage === hrefPage) {
+        $(this).parent().addClass('active');
+        $(this).closest('ul').parent('li').addClass('active'); // Activate parent if there is a submenu
     }
 });
 
 //Pagination
-$(document).ready( function () {
+$(document).ready(function () {
     $('#myTable').DataTable();
-} );
+});

@@ -1,51 +1,58 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  
+
   <?= $this->renderSection("title") ?>
 
   <!-- General CSS Files -->
-  <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/datatables.net-bs4/css/dataTables.bootsrap4.min.css">
-  <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/@fortawesome/fontawesome-free/css/all.css">
-  <link rel="stylesheet" href="<?=base_url()?>https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/@fortawesome/fontawesome-free/css/all.css">
 
   <!-- CSS Libraries -->
 
   <!-- Template CSS -->
-  <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/style.css">
-  <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/components.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/template/assets/css/style.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/template/assets/css/components.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
   <style>
     .btn-read {
-        pointer-events: none; /* Tidak bisa diklik */
-        opacity: 0.5;         /* Tampilan redup seperti disabled */
-        cursor: not-allowed;  /* Kursor larangan */
-        position: relative;   /* Untuk posisi ikon */
+      pointer-events: none;
+      /* Tidak bisa diklik */
+      opacity: 0.5;
+      /* Tampilan redup seperti disabled */
+      cursor: not-allowed;
+      /* Kursor larangan */
+      position: relative;
+      /* Untuk posisi ikon */
     }
 
     .btn-read .lock-icon {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 1rem; /* Ukuran ikon */
-        color: #ffffff;  /* Warna ikon */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1rem;
+      /* Ukuran ikon */
+      color: #ffffff;
+      /* Warna ikon */
     }
+
     .navbar-bg {
-    background-color: #005328; /* Ganti dengan warna yang Anda inginkan */
-}
+      background-color: #005328;
+      /* Ganti dengan warna yang Anda inginkan */
+    }
 
-.navbar .nav-link {
-    color: #FFFFFF !important; /* Ganti warna teks di navbar */
-}
-
-
-</style>
+    .navbar .nav-link {
+      color: #FFFFFF !important;
+      /* Ganti warna teks di navbar */
+    }
+  </style>
 
 </head>
 
@@ -84,19 +91,19 @@
               </div>
               <div class="search-item">
                 <a href="#">
-                  <img class="mr-3 rounded" width="30" src="<?=base_url()?>/template/assets/img/products/product-3-50.png" alt="product">
+                  <img class="mr-3 rounded" width="30" src="<?= base_url() ?>/template/assets/img/products/product-3-50.png" alt="product">
                   oPhone S9 Limited Edition
                 </a>
               </div>
               <div class="search-item">
                 <a href="#">
-                  <img class="mr-3 rounded" width="30" src="<?=base_url()?>/template/assets/img/products/product-2-50.png" alt="product">
+                  <img class="mr-3 rounded" width="30" src="<?= base_url() ?>/template/assets/img/products/product-2-50.png" alt="product">
                   Drone X2 New Gen-7
                 </a>
               </div>
               <div class="search-item">
                 <a href="#">
-                  <img class="mr-3 rounded" width="30" src="<?=base_url()?>/template/assets/img/products/product-1-50.png" alt="product">
+                  <img class="mr-3 rounded" width="30" src="<?= base_url() ?>/template/assets/img/products/product-1-50.png" alt="product">
                   Headphone Blitz
                 </a>
               </div>
@@ -133,7 +140,7 @@
               <div class="dropdown-list-content dropdown-list-message">
                 <a href="#" class="dropdown-item dropdown-item-unread">
                   <div class="dropdown-item-avatar">
-                    <img alt="image" src="<?=base_url()?>/template/assets/img/avatar/avatar-1.png" class="rounded-circle">
+                    <img alt="image" src="<?= base_url() ?>/template/assets/img/avatar/avatar-1.png" class="rounded-circle">
                     <div class="is-online"></div>
                   </div>
                   <div class="dropdown-item-desc">
@@ -144,7 +151,7 @@
                 </a>
                 <a href="#" class="dropdown-item dropdown-item-unread">
                   <div class="dropdown-item-avatar">
-                    <img alt="image" src="<?=base_url()?>/template/assets/img/avatar/avatar-2.png" class="rounded-circle">
+                    <img alt="image" src="<?= base_url() ?>/template/assets/img/avatar/avatar-2.png" class="rounded-circle">
                   </div>
                   <div class="dropdown-item-desc">
                     <b>Dedik Sugiharto</b>
@@ -154,7 +161,7 @@
                 </a>
                 <a href="#" class="dropdown-item dropdown-item-unread">
                   <div class="dropdown-item-avatar">
-                    <img alt="image" src="<?=base_url()?>/template/assets/img/avatar/avatar-3.png" class="rounded-circle">
+                    <img alt="image" src="<?= base_url() ?>/template/assets/img/avatar/avatar-3.png" class="rounded-circle">
                     <div class="is-online"></div>
                   </div>
                   <div class="dropdown-item-desc">
@@ -165,7 +172,7 @@
                 </a>
                 <a href="#" class="dropdown-item">
                   <div class="dropdown-item-avatar">
-                    <img alt="image" src="<?=base_url()?>/template/assets/img/avatar/avatar-4.png" class="rounded-circle">
+                    <img alt="image" src="<?= base_url() ?>/template/assets/img/avatar/avatar-4.png" class="rounded-circle">
                   </div>
                   <div class="dropdown-item-desc">
                     <b>Ardian Rahardiansyah</b>
@@ -175,7 +182,7 @@
                 </a>
                 <a href="#" class="dropdown-item">
                   <div class="dropdown-item-avatar">
-                    <img alt="image" src="<?=base_url()?>/template/assets/img/avatar/avatar-5.png" class="rounded-circle">
+                    <img alt="image" src="<?= base_url() ?>/template/assets/img/avatar/avatar-5.png" class="rounded-circle">
                   </div>
                   <div class="dropdown-item-desc">
                     <b>Alfa Zulkarnain</b>
@@ -249,8 +256,9 @@
             </div>
           </li>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-            <img alt="image" src="<?=base_url()?>/template/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block"><?=user()->username ?></div></a>
+              <img alt="image" src="<?= base_url() ?>/template/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+              <div class="d-sm-none d-lg-inline-block"><?= user()->username ?></div>
+            </a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title">Logged in 5 min ago</div>
               <a href="features-profile.html" class="dropdown-item has-icon">
@@ -265,10 +273,10 @@
               <div class="dropdown-divider"></div>
               <?php if (logged_in()) { ?>
                 <a href="/logout" class="dropdown-item has-icon text-danger"><i class="fas fa-sign-out-alt"></i> Logout
-              <?php } else { ?>
-                <a href="/login" class="dropdown-item has-icon text-danger"><i class="fas fa-sign-out-alt"></i> Login
-              <?php } ?>
-              </a>
+                <?php } else { ?>
+                  <a href="/login" class="dropdown-item has-icon text-danger"><i class="fas fa-sign-out-alt"></i> Login
+                  <?php } ?>
+                  </a>
             </div>
           </li>
         </ul>
@@ -276,27 +284,27 @@
       <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="<?= site_url('home')?>">Akuntansi Eureeka</a>
+            <a href="<?= site_url() ?>">Akuntansi Eureeka</a>
           </div>
-          <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">St</a>
-          </div>
+          <!-- <div class="sidebar-brand sidebar-brand-sm">
+            <a href="index.html">Akuntansi Eureeka</a>
+          </div> -->
           <ul class="sidebar-menu">
-              <!-- INI CARA MEMANGGIL MENU -->
-              <?= $this->include("layout/menu") ?>;
-            </ul>
+            <!-- INI CARA MEMANGGIL MENU -->
+            <?= $this->include("layout/menu") ?>;
+          </ul>
 
-            <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-              <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-                <i class="fas fa-rocket"></i> Documentation
-              </a>
-            </div>
+          <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
+            <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
+              <i class="fas fa-rocket"></i> Documentation
+            </a>
+          </div>
         </aside>
       </div>
 
       <!-- Main Content -->
       <div class="main-content">
-      <?= $this->renderSection("content") ?>
+        <?= $this->renderSection("content") ?>
       </div>
 
       <footer class="main-footer">
@@ -311,27 +319,28 @@
   </div>
 
   <!-- General JS Scripts -->
-  <script src="<?=base_url()?>/template/node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="<?=base_url()?>/template/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
-  <script src="<?=base_url()?>/template/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="<?=base_url()?>/template/node_modules/datatables.net-bs4/js/dataTables.bootsrap4.min.js"></script>
-  <script src="<?=base_url()?>/template/node_modules/nicescroll/dist/jquery.nicescroll.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+  <script src="<?= base_url() ?>/template/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="<?= base_url() ?>/template/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+  <script src="<?= base_url() ?>/template/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="<?= base_url() ?>/template/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="<?= base_url() ?>/template/node_modules/nicescroll/dist/jquery.nicescroll.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  
+
   <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
 
-  <script src="<?=base_url()?>/template/assets/js/stisla.js"></script>
+  <script src="<?= base_url() ?>/template/assets/js/stisla.js"></script>
 
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
   <!-- JS Libraies -->
 
   <!-- Template JS File -->
-  <script src="<?=base_url()?>/template/assets/js/scripts.js"></script>
-  <script src="<?=base_url()?>/template/assets/js/custom.js"></script>
+  <script src="<?= base_url() ?>/template/assets/js/scripts.js"></script>
+  <script src="<?= base_url() ?>/template/assets/js/custom.js"></script>
 
   <!-- Page Specific JS File -->
+
 </body>
+
 </html>
