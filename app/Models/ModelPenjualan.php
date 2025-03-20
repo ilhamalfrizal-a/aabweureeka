@@ -12,66 +12,68 @@ class ModelPenjualan extends Model
     protected $returnType       = 'object';
     // protected $useSoftDeletes   = false;
     // protected $protectFields    = true;
-    protected $allowedFields    = ['tanggal',
-    'nota',
-    'id_pelanggan',
-    'TOP',
-    'tgl_jatuhtempo',
-    'id_setupsalesman',
-    'id_lokasi',
-    'no_fp',
-    'nama_stock',
-    'id_satuan',
-    'qty_1',
-    'qty_2',
-    'harga_satuan',
-    'jml_harga',
-    'disc_1',
-    'disc_2',
-    'total',
-    'pembayaran',
-    'tipe',
-    'sub_total',
-    'disc_cash',
-    'ppn',
-    'grand_total',
-    'npwp',
-    'terbilang'];
+    protected $allowedFields    = [
+        'tanggal',
+        'nota',
+        'id_pelanggan',
+        'TOP',
+        'tgl_jatuhtempo',
+        'id_setupsalesman',
+        'id_lokasi',
+        'no_fp',
+        'nama_stock',
+        'id_satuan',
+        'qty_1',
+        'qty_2',
+        'harga_satuan',
+        'jml_harga',
+        'disc_1',
+        'disc_2',
+        'total',
+        'pembayaran',
+        'tipe',
+        'sub_total',
+        'disc_cash',
+        'ppn',
+        'grand_total',
+        'npwp',
+        'terbilang'
+    ];
 
     function getAll()
     {
-            $builder = $this->db->table('penjualan1 p');
-            
-            // Pilih kolom dari tabel utama dan tabel terkait
-            $builder->select('
+        $builder = $this->db->table('penjualan1 p');
+
+        // Pilih kolom dari tabel utama dan tabel terkait
+        $builder->select('
                 p.*, 
                 l1.nama_lokasi AS lokasi_asal, 
                 sp.nama_pelanggan AS nama_pelanggan, 
                 s.kode_satuan AS kode_satuan,
                 sm.nama_setupsalesman AS nama_setupsalesman
             ');
-            
-            // Join dengan tabel 'lokasi1' untuk mendapatkan nama lokasi
-            $builder->join('lokasi1 l1', 'p.id_lokasi = l1.id_lokasi', 'left');
-            
-            // Join dengan tabel 'setuppelanggan1' untuk mendapatkan nama pelanggan
-            $builder->join('setuppelanggan1 sp', 'p.id_pelanggan = sp.id_pelanggan', 'left');
-            
-            // Join dengan tabel 'satuan1' untuk mendapatkan kode satuan
-            $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan', 'left');
-            
-            // Join dengan tabel 'setupsalesman1' untuk mendapatkan nama salesman
-            $builder->join('setupsalesman1 sm', 'p.id_setupsalesman = sm.id_setupsalesman', 'left');
-            
-            return $builder->get()->getResult();
-    
-            return $this->findAll();
+
+        // Join dengan tabel 'lokasi1' untuk mendapatkan nama lokasi
+        $builder->join('lokasi1 l1', 'p.id_lokasi = l1.id_lokasi', 'left');
+
+        // Join dengan tabel 'setuppelanggan1' untuk mendapatkan nama pelanggan
+        $builder->join('setuppelanggan1 sp', 'p.id_pelanggan = sp.id_pelanggan', 'left');
+
+        // Join dengan tabel 'satuan1' untuk mendapatkan kode satuan
+        $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan', 'left');
+
+        // Join dengan tabel 'setupsalesman1' untuk mendapatkan nama salesman
+        $builder->join('setupsalesman1 sm', 'p.id_setupsalesman = sm.id_setupsalesman', 'left');
+
+        return $builder->get()->getResult();
+
+        return $this->findAll();
     }
-    
+
     public function getByMonthAndYear($bulan, $tahun)
     {
         $builder = $this->db->table('penjualan1 p');
-            
+
         // Pilih kolom dari tabel utama dan tabel terkait
         $builder->select('
             p.*, 
@@ -80,16 +82,16 @@ class ModelPenjualan extends Model
             s.kode_satuan AS kode_satuan,
             sm.nama_setupsalesman AS nama_setupsalesman
         ');
-        
+
         // Join dengan tabel 'lokasi1' untuk mendapatkan nama lokasi
         $builder->join('lokasi1 l1', 'p.id_lokasi = l1.id_lokasi', 'left');
-        
+
         // Join dengan tabel 'setuppelanggan1' untuk mendapatkan nama pelanggan
         $builder->join('setuppelanggan1 sp', 'p.id_pelanggan = sp.id_pelanggan', 'left');
-        
+
         // Join dengan tabel 'satuan1' untuk mendapatkan kode satuan
         $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan', 'left');
-        
+
         // Join dengan tabel 'setupsalesman1' untuk mendapatkan nama salesman
         $builder->join('setupsalesman1 sm', 'p.id_setupsalesman = sm.id_setupsalesman', 'left');
         $builder->where('MONTH(p.tanggal)', $bulan);
@@ -97,50 +99,51 @@ class ModelPenjualan extends Model
         $data = $builder->get()->getResult();
 
         $grandtotal =  $this->selectSum('grand_total')
-        ->where('MONTH(tanggal)', $bulan)
-        ->where('YEAR(tanggal)', $tahun)
-        ->get()
-        ->getRow()
-        ->grand_total ?? 0;
+            ->where('MONTH(tanggal)', $bulan)
+            ->where('YEAR(tanggal)', $tahun)
+            ->get()
+            ->getRow()
+            ->grand_total ?? 0;
 
-            return [
-                'data' => $data,           // Semua data
-                'grandtotal' => $grandtotal, // Total nilai grand_total
-            ];
+        return [
+            'data' => $data,           // Semua data
+            'grandtotal' => $grandtotal, // Total nilai grand_total
+        ];
     }
-    
-        function getById($id) {
-            
-            $builder = $this->db->table('penjualan1 p');
-            
-            // Pilih kolom dari tabel utama dan tabel terkait
-            $builder->select('
+
+    function getById($id)
+    {
+
+        $builder = $this->db->table('penjualan1 p');
+
+        // Pilih kolom dari tabel utama dan tabel terkait
+        $builder->select('
                 p.*, 
                 l1.nama_lokasi AS lokasi_asal, 
                 sp.nama_pelanggan AS nama_pelanggan, 
                 s.kode_satuan AS kode_satuan,
                 sm.nama_setupsalesman AS nama_setupsalesman
             ');
-            
-            // Join dengan tabel 'lokasi1' untuk mendapatkan nama lokasi
-            $builder->join('lokasi1 l1', 'p.id_lokasi = l1.id_lokasi', 'left');
-            
-            // Join dengan tabel 'setuppelanggan1' untuk mendapatkan nama pelanggan
-            $builder->join('setuppelanggan1 sp', 'p.id_pelanggan = sp.id_pelanggan', 'left');
-            
-            // Join dengan tabel 'satuan1' untuk mendapatkan kode satuan
-            $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan', 'left');
-            
-            // Join dengan tabel 'setupsalesman1' untuk mendapatkan nama salesman
-            $builder->join('setupsalesman1 sm', 'p.id_setupsalesman = sm.id_setupsalesman', 'left');
-            
-            // Tambahkan kondisi where untuk id
-            $builder->where('p.id_penjualan', $id);
-            
-            return $builder->get()->getRow();
-        }
 
-         public function get_laporan($tglawal, $tglakhir, $salesman, $lokasi = null)
+        // Join dengan tabel 'lokasi1' untuk mendapatkan nama lokasi
+        $builder->join('lokasi1 l1', 'p.id_lokasi = l1.id_lokasi', 'left');
+
+        // Join dengan tabel 'setuppelanggan1' untuk mendapatkan nama pelanggan
+        $builder->join('setuppelanggan1 sp', 'p.id_pelanggan = sp.id_pelanggan', 'left');
+
+        // Join dengan tabel 'satuan1' untuk mendapatkan kode satuan
+        $builder->join('satuan1 s', 'p.id_satuan = s.id_satuan', 'left');
+
+        // Join dengan tabel 'setupsalesman1' untuk mendapatkan nama salesman
+        $builder->join('setupsalesman1 sm', 'p.id_setupsalesman = sm.id_setupsalesman', 'left');
+
+        // Tambahkan kondisi where untuk id
+        $builder->where('p.id_penjualan', $id);
+
+        return $builder->get()->getRow();
+    }
+
+    public function get_laporan($tglawal, $tglakhir, $salesman, $lokasi = null)
     {
         $builder = $this->db->table('penjualan1 p');
 
@@ -172,16 +175,16 @@ class ModelPenjualan extends Model
             $builder->where('p.id_setupsalesman', $salesman);
         }
         // Filter berdasarkan lokasi jika diberikan
-         if (!empty($lokasi)) {
-        $builder->where('p.id_lokasi', $lokasi);
+        if (!empty($lokasi)) {
+            $builder->where('p.id_lokasi', $lokasi);
         }
 
         // Eksekusi query dan kembalikan hasil
         return $builder->get()->getResult();
     }
 
-        
-    
+
+
 
     // protected bool $allowEmptyInserts = false;
     // protected bool $updateOnlyChanged = true;
@@ -213,4 +216,3 @@ class ModelPenjualan extends Model
     // protected $beforeDelete   = [];
     // protected $afterDelete    = [];
 }
-

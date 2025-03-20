@@ -23,7 +23,7 @@ class Periode extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 100,
             ],
-            
+
         ]);
         $this->forge->addKey('id_periode', true);
         $this->forge->createTable('periode1');

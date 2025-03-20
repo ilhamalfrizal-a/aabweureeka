@@ -6,7 +6,7 @@ use App\Models\ModelLokasi;
 use App\Controllers\BaseController;
 use App\Models\ModelPenjualan;
 use App\Models\ModelReturPenjualan;
-use App\Models\ModelSetupsalesman;
+use App\Models\setup\ModelSetupsalesman;
 use CodeIgniter\HTTP\ResponseInterface;
 use TCPDF;
 
@@ -25,7 +25,7 @@ class LaporanPenjualan extends BaseController
         $this->objReturPenjualan = new ModelReturPenjualan();
         $this->db = \Config\Database::connect();
     }
-    
+
     public function index()
     {
         $tglawal = $this->request->getVar('tglawal') ? $this->request->getVar('tglawal') : '';
@@ -35,7 +35,7 @@ class LaporanPenjualan extends BaseController
 
         // Panggil model untuk mendapatkan data laporan
         $penjualan = $this->objPenjualan->get_laporan($tglawal, $tglakhir, $salesman, $lokasi);
-        
+
 
         // Gabungkan data penjualan dan retur penjualan
         $dtpenjualan = array_merge($penjualan);
@@ -91,7 +91,7 @@ class LaporanPenjualan extends BaseController
 
         // Panggil model untuk mendapatkan data laporan
         $penjualan = $this->objPenjualan->get_laporan($tglawal, $tglakhir, $salesman, $lokasi);
-        
+
 
         // Gabungkan data penjualan dan retur penjualan
         $dtpenjualan = array_merge($penjualan);
